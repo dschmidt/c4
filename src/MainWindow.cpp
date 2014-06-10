@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui(new Ui::MainWindow)
 {
     m_ui->setupUi(this);
-
+    m_ui->statusbar->setVisible(false);
 
     connect(m_ui->actionExit, SIGNAL(triggered()), QApplication::instance(), SLOT(quit()));
 

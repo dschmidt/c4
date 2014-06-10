@@ -14,6 +14,13 @@ class ARToolkitWidget : public QGLWidget
 public:
     explicit ARToolkitWidget(QWidget* parent = 0);
     virtual ~ARToolkitWidget();
+
+protected:
+    void initializeGL();
+    void resizeGL(int width, int height);
+    void paintGL();
+
+    void timerEvent(QTimerEvent*);
 };
 
 #endif // ARTOOLKIWWIDGET_H

@@ -9,7 +9,16 @@ add_executable(c4
 )
 
 target_link_libraries(c4
+    GL
+    GLEW
+    AR
+    ARgsub_lite
+    ARvideo
     ${QT_LIBRARIES}
 )
 
-install(TARGETS c4 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+file(COPY patt.hiro camera_para.dat DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+
+# We don't support installing currently cause we need patt.hiro and camera_para.dat in the application dir
+# install(TARGETS c4 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
