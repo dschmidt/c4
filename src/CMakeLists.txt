@@ -2,6 +2,7 @@
 qt4_wrap_ui(c4_UI MainWindow.ui)
 
 add_executable(c4
+    ARToolkitWidget.cpp
     main.cpp
     MainWindow.cpp
     ${c4_UI}

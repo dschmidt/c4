@@ -7,6 +7,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class ARToolkitWidget;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,7 +18,8 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *m_ui;
+    Ui::MainWindow* m_ui;
+    ARToolkitWidget*  m_gameWidget;
 };
 
 #endif // MAINWINDOW_H
