@@ -6,11 +6,54 @@
 #include <QApplication>
 
 
+// ============================================================================
+//	Constants
+// ============================================================================
+
+#define VIEW_SCALEFACTOR		0.025		// 1.0 ARToolKit unit becomes 0.025 of my OpenGL units.
+#define VIEW_DISTANCE_MIN		0.1			// Objects closer to the camera than this will not be displayed.
+#define VIEW_DISTANCE_MAX		100.0		// Objects further away from the camera than this will not be displayed.
+
+class Pattern
+{
+public:
+    // Transformation matrix retrieval.
+    double width;
+    double centre[2];
+    double trans[3][4];
+    int found;
+    int id;
+
+    Pattern(double pattWidth = 80.0)
+    {
+        width = pattWidth;
+        centre[0] = 0.0;
+        centre[1] = 0.0;
+
+        found = FALSE;
+
+    }
+};
 
 
 ARToolkitWidget::ARToolkitWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::DoubleBuffer | QGL::Rgba | QGL::DepthBuffer), parent)
 {
+    // Image acquisition.
+    gARTImage = NULL;
+
+    // Marker detection.
+    gARTThreshhold = 100;
+    gCallCountMarkerDetect = 0;
+
+    // Markers
+    gPatt = new Pattern();
+    gPatt2 = new Pattern();
+
+    // Drawing.
+    gArglSettings = NULL;
+    gDrawRotate = FALSE;
+    gDrawRotateAngle = 0;			// For use in drawing.
 }
 
 ARToolkitWidget::~ARToolkitWidget()
@@ -18,6 +61,10 @@ ARToolkitWidget::~ARToolkitWidget()
     arglCleanup(gArglSettings);
     arVideoCapStop();
     arVideoClose();
+
+    // Markers
+    delete gPatt;
+    delete gPatt2;
 }
 
 
@@ -28,7 +75,7 @@ int ARToolkitWidget::setupCamera(const char *cparam_name, char *vconf, ARParam *
 
     // Open the video path.
     if (arVideoOpen(vconf) < 0) {
-        qDebug() << "setupCamera(): Unable to open connection to camera.\n";
+        qWarning() << "setupCamera(): Unable to open connection to camera.\n";
         return (FALSE);
     }
 
@@ -38,7 +85,7 @@ int ARToolkitWidget::setupCamera(const char *cparam_name, char *vconf, ARParam *
 
     // Load the camera parameters, resize for the window and init.
     if (arParamLoad(cparam_name, 1, &wparam) < 0) {
-        qDebug() << "setupCamera(): Error loading parameter file " << cparam_name << " for camera.\n";
+        qWarning() << "setupCamera(): Error loading parameter file " << cparam_name << " for camera.\n";
         return (FALSE);
     }
     arParamChangeSize(&wparam, xsize, ysize, cparam);
@@ -48,7 +95,7 @@ int ARToolkitWidget::setupCamera(const char *cparam_name, char *vconf, ARParam *
     arInitCparam(cparam);
 
     if (arVideoCapStart() != 0) {
-        qDebug() << "setupCamera(): Unable to begin camera data capture.\n";
+        qWarning() << "setupCamera(): Unable to begin camera data capture.\n";
         return (FALSE);
     }
 
@@ -60,35 +107,35 @@ int ARToolkitWidget::setupCamera(const char *cparam_name, char *vconf, ARParam *
 void ARToolkitWidget::debugReportMode(const ARGL_CONTEXT_SETTINGS_REF arglContextSettings)
 {
     if (arFittingMode == AR_FITTING_TO_INPUT) {
-        qDebug() << "FittingMode (Z): INPUT IMAGE\n";
+        qWarning() << "FittingMode (Z): INPUT IMAGE\n";
     } else {
-        qDebug() << "FittingMode (Z): COMPENSATED IMAGE\n";
+        qWarning() << "FittingMode (Z): COMPENSATED IMAGE\n";
     }
 
     if (arImageProcMode == AR_IMAGE_PROC_IN_FULL) {
-        qDebug() << "ProcMode (X)   : FULL IMAGE\n";
+        qWarning() << "ProcMode (X)   : FULL IMAGE\n";
     } else {
-        qDebug() << "ProcMode (X)   : HALF IMAGE\n";
+        qWarning() << "ProcMode (X)   : HALF IMAGE\n";
     }
 
     if (arglDrawModeGet(arglContextSettings) == AR_DRAW_BY_GL_DRAW_PIXELS) {
-        qDebug() << "DrawMode (C)   : GL_DRAW_PIXELS\n";
+        qWarning() << "DrawMode (C)   : GL_DRAW_PIXELS\n";
     } else if (arglTexmapModeGet(arglContextSettings) == AR_DRAW_TEXTURE_FULL_IMAGE) {
-        qDebug() << "DrawMode (C)   : TEXTURE MAPPING (FULL RESOLUTION)\n";
+        qWarning() << "DrawMode (C)   : TEXTURE MAPPING (FULL RESOLUTION)\n";
     } else {
-        qDebug() << "DrawMode (C)   : TEXTURE MAPPING (HALF RESOLUTION)\n";
+        qWarning() << "DrawMode (C)   : TEXTURE MAPPING (HALF RESOLUTION)\n";
     }
 
     if (arTemplateMatchingMode == AR_TEMPLATE_MATCHING_COLOR) {
-        qDebug() << "TemplateMatchingMode (M)   : Color Template\n";
+        qWarning() << "TemplateMatchingMode (M)   : Color Template\n";
     } else {
-        qDebug() << "TemplateMatchingMode (M)   : BW Template\n";
+        qWarning() << "TemplateMatchingMode (M)   : BW Template\n";
     }
 
     if (arMatchingPCAMode == AR_MATCHING_WITHOUT_PCA) {
-        qDebug() << "MatchingPCAMode (P)   : Without PCA\n";
+        qWarning() << "MatchingPCAMode (P)   : Without PCA\n";
     } else {
-        qDebug() << "MatchingPCAMode (P)   : With PCA\n";
+        qWarning() << "MatchingPCAMode (P)   : With PCA\n";
     }
 }
 
@@ -96,7 +143,7 @@ int ARToolkitWidget::setupMarker(const char *patt_name, int *patt_id)
 {
     // Loading only 1 pattern in this example.
     if ((*patt_id = arLoadPatt(patt_name)) < 0) {
-        qDebug() << "setupMarker(): pattern load error !!\n";
+        qWarning() << "setupMarker(): pattern load error !!\n";
         return (FALSE);
     }
 
@@ -127,25 +174,25 @@ void ARToolkitWidget::initializeGL()
     //
 
     if (!setupCamera(cparam_name, vconf, &gARTCparam)) {
-        qDebug() << "main(): Unable to set up AR camera.\n";
+        qWarning() << "main(): Unable to set up AR camera.\n";
         QApplication::instance()->exit(-1);
     }
 
     // Setup argl library for current context.
     if ((gArglSettings = arglSetupForCurrentContext()) == NULL) {
-        qDebug() << "main(): arglSetupForCurrentContext() returned error.\n";
+        qWarning() << "main(): arglSetupForCurrentContext() returned error.\n";
         QApplication::instance()->exit(-1);
     }
     debugReportMode(gArglSettings);
     glEnable(GL_DEPTH_TEST);
     arUtilTimerReset();
 
-    if (!setupMarker(patt_name, &gPatt.id)) {
-        qDebug() << "main(): Unable to set up AR marker.\n";
+    if (!setupMarker(patt_name, &gPatt->id)) {
+        qWarning() << "main(): Unable to set up AR marker.\n";
         QApplication::instance()->exit(-1);
     }
-    if (!setupMarker(patt_name2, &gPatt2.id)) {
-        qDebug() << "main(): Unable to set up AR marker.\n";
+    if (!setupMarker(patt_name2, &gPatt2->id)) {
+        qWarning() << "main(): Unable to set up AR marker.\n";
         QApplication::instance()->exit(-1);
     }
 }
@@ -236,28 +283,28 @@ void ARToolkitWidget::paintGL()
     // (I.e. must be specified before viewing transformations.)
     //none
 
-    if (gPatt.found) {
+    if (gPatt->found) {
 
         // Calculate the camera position relative to the marker.
         // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
-        arglCameraViewRH(gPatt.trans, m, VIEW_SCALEFACTOR);
+        arglCameraViewRH(gPatt->trans, m, VIEW_SCALEFACTOR);
         glLoadMatrixd(m);
 
         // All lighting and geometry to be drawn relative to the marker goes here.
         drawCube();
 
-    } // gPatt.found
-    if (gPatt2.found) {
+    } // gPatt->found
+    if (gPatt2->found) {
 
         // Calculate the camera position relative to the marker.
         // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
-        arglCameraViewRH(gPatt2.trans, m, VIEW_SCALEFACTOR);
+        arglCameraViewRH(gPatt2->trans, m, VIEW_SCALEFACTOR);
         glLoadMatrixd(m);
 
         // All lighting and geometry to be drawn relative to the marker goes here.
         drawCube();
 
-    } // gPatt2.found
+    } // gPatt2->found
 
     // Any 2D overlays go here.
     //none
@@ -292,14 +339,14 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
         // visible marker matching our preferred pattern.
         k = -1;
         for (j = 0; j < marker_num; j++) {
-            if (marker_info[j].id == gPatt.id) {
+            if (marker_info[j].id == gPatt->id) {
                 if (k == -1) k = j; // First marker detected.
                 else if(marker_info[j].cf > marker_info[k].cf) k = j; // Higher confidence marker detected.
             }
         }
         k2 = -1;
         for (j = 0; j < marker_num; j++) {
-            if (marker_info[j].id == gPatt2.id) {
+            if (marker_info[j].id == gPatt2->id) {
                 if (k2 == -1) k2 = j; // First marker detected.
                 else if(marker_info[j].cf > marker_info[k].cf) k2 = j; // Higher confidence marker detected.
             }
@@ -307,17 +354,17 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
 
         if (k != -1) {
             // Get the transformation between the marker and the real camera into gPatt_trans.
-            arGetTransMat(&(marker_info[k]), gPatt.centre, gPatt.width, gPatt.trans);
-            gPatt.found = TRUE;
+            arGetTransMat(&(marker_info[k]), gPatt->centre, gPatt->width, gPatt->trans);
+            gPatt->found = TRUE;
         } else {
-            gPatt.found = FALSE;
+            gPatt->found = FALSE;
         }
         if (k2 != -1) {
             // Get the transformation between the marker and the real camera into gPatt_trans.
-            arGetTransMat(&(marker_info[k2]), gPatt2.centre, gPatt2.width, gPatt2.trans);
-            gPatt2.found = TRUE;
+            arGetTransMat(&(marker_info[k2]), gPatt2->centre, gPatt2->width, gPatt2->trans);
+            gPatt2->found = TRUE;
         } else {
-            gPatt2.found = FALSE;
+            gPatt2->found = FALSE;
         }
 
         // Tell Qt the display has changed.
