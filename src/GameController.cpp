@@ -4,3 +4,8 @@ GameController::GameController( QObject* parent )
     : QObject(parent)
 {
 }
+
+void GameController::onMoved(int column)
+{
+
+}
