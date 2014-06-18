@@ -5,6 +5,7 @@ add_executable(c4
     ARToolkitWidget.cpp
     main.cpp
     MainWindow.cpp
+    Player.cpp
     ${c4_UI}
 )
 
