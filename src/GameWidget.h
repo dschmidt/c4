@@ -10,7 +10,7 @@ class GameWidget : public ARToolkitWidget
 {
 public:
     GameWidget(QWidget *parent);
-//    void drawObjects();
+    void drawObjects();
 
 private:
     Pattern* pattChip;

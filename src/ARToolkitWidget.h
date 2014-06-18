@@ -41,6 +41,15 @@ protected:
 
     Pattern* loadPattern(const char *patt_name);
 
+    // ============================================================================
+    //	Constants
+    // ============================================================================
+
+    static const double VIEW_SCALEFACTOR = 0.025;      // 1.0 ARToolKit unit becomes 0.025 of my OpenGL units.
+    static const double VIEW_DISTANCE_MIN = 0.1;		// Objects closer to the camera than this will not be displayed.
+    static const double VIEW_DISTANCE_MAX = 100.0;		// Objects further away from the camera than this will not be displayed.
+
+
 private:
     int setupCamera(const char *cparam_name, char *vconf, ARParam *cparam);
     void debugReportMode(const ARGL_CONTEXT_SETTINGS_REF arglContextSettings);
