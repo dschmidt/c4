@@ -1,13 +1,6 @@
 #ifndef ARTOOLKIWWIDGET_H
 #define ARTOOLKIWWIDGET_H
 
-#include <QGLWidget>
-#include <AR/config.h>
-#include <AR/video.h>
-#include <AR/param.h>			// arParamDisp()
-#include <AR/ar.h>
-#include <AR/gsub_lite.h>
-
 
 #include "Config.h"
 
@@ -20,6 +13,14 @@ class GameModel;
 
 
 #ifdef ARTOOLKIT_FOUND
+
+#include <QGLWidget>
+#include <AR/config.h>
+#include <AR/video.h>
+#include <AR/param.h>			// arParamDisp()
+#include <AR/ar.h>
+#include <AR/gsub_lite.h>
+
 class ARToolkitWidget : public QGLWidget
 {
     Q_OBJECT
