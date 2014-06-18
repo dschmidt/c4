@@ -372,3 +372,8 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
     }
 }
 
+void ARToolkitWidget::setGameModel(GameModel* model)
+{
+    m_model = model;
+}
+
