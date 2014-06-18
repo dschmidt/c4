@@ -3,3 +3,8 @@
 GlField::GlField()
 {
 }
+
+void GlField::draw()
+{
+
+}
