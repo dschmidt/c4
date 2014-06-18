@@ -1,5 +1,7 @@
 //#include <GL/glew.h>
 
+#ifdef ARTOOLKIT_FOUND
+
 #include "ARToolkitWidget.h"
 
 #include <QDebug>
@@ -377,3 +379,5 @@ void ARToolkitWidget::setGameModel(GameModel* model)
     m_model = model;
 }
 
+
+#endif

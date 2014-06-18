@@ -8,6 +8,9 @@
 #include <AR/ar.h>
 #include <AR/gsub_lite.h>
 
+
+#include "Config.h"
+
 namespace Ui {
 class ARToolkitWidget;
 }
@@ -15,6 +18,8 @@ class ARToolkitWidget;
 class Pattern;
 class GameModel;
 
+
+#ifdef ARTOOLKIT_FOUND
 class ARToolkitWidget : public QGLWidget
 {
     Q_OBJECT
@@ -25,15 +30,13 @@ public:
 
     void setGameModel(GameModel* model);
 
-signals:
-    void arChipDropped(int column);
-
 protected:
     void initializeGL();
     void resizeGL(int width, int height);
     void paintGL();
 
     void timerEvent(QTimerEvent*);
+
 
 private:
     int setupCamera(const char *cparam_name, char *vconf, ARParam *cparam);
@@ -61,5 +64,23 @@ private:
 
     GameModel* m_model;
 };
+#else
+
+#include <QLabel>
+
+class ARToolkitWidget : public QLabel
+{
+public:
+    ARToolkitWidget(QWidget* parent = 0) : QLabel("BUMMER", parent)
+    {
+
+    }
+
+    void setGameModel(GameModel* model)
+    {
+    }
+};
+
+#endif
 
 #endif // ARTOOLKIWWIDGET_H

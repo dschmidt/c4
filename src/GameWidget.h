@@ -6,10 +6,14 @@
 class GameWidget : public ARToolkitWidget
 {
 public:
-    GameWidget();
+    GameWidget(QWidget* parent = 0);
 
 signals:
-    void arChipDropped();
+//    void arChipDropped(int column);
+
+protected:
+    // HACK
+    virtual void mousePressEvent ( QMouseEvent * event );
 };
 
 #endif // GAMEWIDGET_H
