@@ -3,10 +3,20 @@
 
 #include "ARToolkitWidget.h"
 
+class GlChip;
+class GlField;
+
 class GameWidget : public ARToolkitWidget
 {
 public:
-    GameWidget();
+    GameWidget(QWidget *parent);
+//    void drawObjects();
+
+private:
+    Pattern* pattChip;
+    Pattern* pattField;
+    GlChip* chip;
+    GlField* field;
 
 signals:
     void arChipDropped();

@@ -2,7 +2,7 @@
 #include "ui_MainWindow.h"
 
 
-#include "ARToolkitWidget.h"
+#include "GameWidget.h"
 #include "GameModel.h"
 #include "GameController.h"
 
@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupGame()
 {
-    m_gameWidget = new ARToolkitWidget(this);
+    m_gameWidget = new GameWidget(this);
     m_model = new GameModel(this);
     m_controller = new GameController(this);
 

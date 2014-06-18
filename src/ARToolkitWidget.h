@@ -2,6 +2,7 @@
 #define ARTOOLKIWWIDGET_H
 
 #include <QGLWidget>
+#include <QVector>
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/param.h>			// arParamDisp()
@@ -24,6 +25,9 @@ public:
     virtual ~ARToolkitWidget();
 
     void setGameModel(GameModel* model);
+    void addPattern(Pattern* patt);
+    virtual void drawObjects();
+    QVector<Pattern*> patterns;
 
 signals:
     void arChipDropped(int column);
@@ -34,6 +38,8 @@ protected:
     void paintGL();
 
     void timerEvent(QTimerEvent*);
+
+    Pattern* loadPattern(const char *patt_name);
 
 private:
     int setupCamera(const char *cparam_name, char *vconf, ARParam *cparam);

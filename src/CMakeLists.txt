@@ -11,6 +11,7 @@ add_executable(c4
     GameModel.cpp
     main.cpp
     MainWindow.cpp
+    Pattern.cpp
     Player.cpp
     ${c4_UI}
 

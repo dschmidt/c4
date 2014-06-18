@@ -1,6 +1,7 @@
 //#include <GL/glew.h>
 
 #include "ARToolkitWidget.h"
+#include "Pattern.h"
 
 #include <QDebug>
 #include <QApplication>
@@ -14,27 +15,11 @@
 #define VIEW_DISTANCE_MIN		0.1			// Objects closer to the camera than this will not be displayed.
 #define VIEW_DISTANCE_MAX		100.0		// Objects further away from the camera than this will not be displayed.
 
-class Pattern
+
+void ARToolkitWidget::addPattern(Pattern *patt)
 {
-public:
-    // Transformation matrix retrieval.
-    double width;
-    double centre[2];
-    double trans[3][4];
-    int found;
-    int id;
-
-    Pattern(double pattWidth = 80.0)
-    {
-        width = pattWidth;
-        centre[0] = 0.0;
-        centre[1] = 0.0;
-
-        found = FALSE;
-
-    }
-};
-
+    patterns.append(patt);
+}
 
 ARToolkitWidget::ARToolkitWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::DoubleBuffer | QGL::Rgba | QGL::DepthBuffer), parent)
@@ -150,6 +135,16 @@ int ARToolkitWidget::setupMarker(const char *patt_name, int *patt_id)
     return (TRUE);
 }
 
+Pattern* ARToolkitWidget::loadPattern(const char *patt_name)
+{
+    Pattern* patt = new Pattern();
+    if (!setupMarker(patt_name, &patt->id)) {
+        qWarning() << "main(): Unable to set up AR marker.\n";
+        QApplication::instance()->exit(-1);
+    }
+    return patt;
+}
+
 void ARToolkitWidget::initializeGL()
 {
     startTimer(0);
@@ -187,14 +182,8 @@ void ARToolkitWidget::initializeGL()
     glEnable(GL_DEPTH_TEST);
     arUtilTimerReset();
 
-    if (!setupMarker(patt_name, &gPatt->id)) {
-        qWarning() << "main(): Unable to set up AR marker.\n";
-        QApplication::instance()->exit(-1);
-    }
-    if (!setupMarker(patt_name2, &gPatt2->id)) {
-        qWarning() << "main(): Unable to set up AR marker.\n";
-        QApplication::instance()->exit(-1);
-    }
+//    addPattern(loadPattern(patt_name));
+//    addPattern(loadPattern(patt_name2));
 }
 
 void ARToolkitWidget::resizeGL(int width, int height)
@@ -258,10 +247,28 @@ void ARToolkitWidget::drawCube(void)
 
 }
 
+void ARToolkitWidget::drawObjects()
+{
+    GLdouble m[16];
+    foreach (Pattern* patt, patterns)
+    {
+        if (patt->found) {
+
+            // Calculate the camera position relative to the marker.
+            // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
+            arglCameraViewRH(patt->trans, m, VIEW_SCALEFACTOR);
+            glLoadMatrixd(m);
+
+            // All lighting and geometry to be drawn relative to the marker goes here.
+            drawCube();
+
+        } // gPatt->found
+    }
+}
+
 void ARToolkitWidget::paintGL()
 {
     GLdouble p[16];
-    GLdouble m[16];
 
     // Select correct buffer for this context.
     glDrawBuffer(GL_BACK);
@@ -283,28 +290,7 @@ void ARToolkitWidget::paintGL()
     // (I.e. must be specified before viewing transformations.)
     //none
 
-    if (gPatt->found) {
-
-        // Calculate the camera position relative to the marker.
-        // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
-        arglCameraViewRH(gPatt->trans, m, VIEW_SCALEFACTOR);
-        glLoadMatrixd(m);
-
-        // All lighting and geometry to be drawn relative to the marker goes here.
-        drawCube();
-
-    } // gPatt->found
-    if (gPatt2->found) {
-
-        // Calculate the camera position relative to the marker.
-        // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
-        arglCameraViewRH(gPatt2->trans, m, VIEW_SCALEFACTOR);
-        glLoadMatrixd(m);
-
-        // All lighting and geometry to be drawn relative to the marker goes here.
-        drawCube();
-
-    } // gPatt2->found
+    drawObjects();
 
     // Any 2D overlays go here.
     //none
@@ -322,7 +308,7 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
 
     ARMarkerInfo    *marker_info;					// Pointer to array holding the details of detected markers.
     int             marker_num;						// Count of number of markers detected.
-    int             j, k, k2;
+    int             j, k;
 
     // Grab a video frame.
     if ((image = arVideoGetImage()) != NULL) {
@@ -335,36 +321,24 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
             exit(-1);
         }
 
-        // Check through the marker_info array for highest confidence
-        // visible marker matching our preferred pattern.
-        k = -1;
-        for (j = 0; j < marker_num; j++) {
-            if (marker_info[j].id == gPatt->id) {
-                if (k == -1) k = j; // First marker detected.
-                else if(marker_info[j].cf > marker_info[k].cf) k = j; // Higher confidence marker detected.
+        foreach (Pattern* patt, patterns)
+        {
+            // Check through the marker_info array for highest confidence
+            // visible marker matching our preferred pattern.
+            k = -1;
+            for (j = 0; j < marker_num; j++) {
+                if (marker_info[j].id == patt->id) {
+                    if (k == -1) k = j; // First marker detected.
+                    else if(marker_info[j].cf > marker_info[k].cf) k = j; // Higher confidence marker detected.
+                }
             }
-        }
-        k2 = -1;
-        for (j = 0; j < marker_num; j++) {
-            if (marker_info[j].id == gPatt2->id) {
-                if (k2 == -1) k2 = j; // First marker detected.
-                else if(marker_info[j].cf > marker_info[k].cf) k2 = j; // Higher confidence marker detected.
+            if (k != -1) {
+                // Get the transformation between the marker and the real camera into gPatt_trans.
+                arGetTransMat(&(marker_info[k]), patt->centre, patt->width, patt->trans);
+                patt->found = TRUE;
+            } else {
+                patt->found = FALSE;
             }
-        }
-
-        if (k != -1) {
-            // Get the transformation between the marker and the real camera into gPatt_trans.
-            arGetTransMat(&(marker_info[k]), gPatt->centre, gPatt->width, gPatt->trans);
-            gPatt->found = TRUE;
-        } else {
-            gPatt->found = FALSE;
-        }
-        if (k2 != -1) {
-            // Get the transformation between the marker and the real camera into gPatt_trans.
-            arGetTransMat(&(marker_info[k2]), gPatt2->centre, gPatt2->width, gPatt2->trans);
-            gPatt2->found = TRUE;
-        } else {
-            gPatt2->found = FALSE;
         }
 
         // Tell Qt the display has changed.
