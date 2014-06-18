@@ -7,6 +7,8 @@ add_executable(c4
     MainWindow.cpp
     Player.cpp
     ${c4_UI}
+
+    Players/HumanPlayer.cpp
 )
 
 target_link_libraries(c4
