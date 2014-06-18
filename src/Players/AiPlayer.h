@@ -6,6 +6,8 @@
 class AiPlayer : public Player
 {
 public:
+    AiPlayer(const QString& name, QObject* parent = 0);
+
     void move();
 };
 

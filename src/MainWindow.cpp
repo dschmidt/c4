@@ -37,6 +37,8 @@ void MainWindow::setupGame()
     m_controller->setGameModel(m_model);
     m_gameWidget->setGameModel(m_model);
 
+    m_controller->setGameWidget(m_gameWidget);
+
 
     m_controller->startGame();
 

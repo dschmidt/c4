@@ -8,6 +8,8 @@ class ARToolkitWidget;
 class HumanPlayer : public Player
 {
 public:
+    HumanPlayer(const QString& name, QObject* parent = 0);
+
     void move();
 
     void setGameWidget(ARToolkitWidget* gameWidget);

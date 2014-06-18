@@ -5,7 +5,7 @@
 
 class Player;
 class GameModel;
-class GameWidget;
+class ARToolkitWidget;
 
 class GameController : public QObject
 {
@@ -14,6 +14,7 @@ class GameController : public QObject
 public:
     explicit GameController(QObject* parent = 0);
     void setGameModel(GameModel* model);
+    void setGameWidget(ARToolkitWidget* model);
     void startGame();
 
 private slots:
@@ -22,7 +23,7 @@ private slots:
 private:
     Player* m_currentPlayer;
     GameModel* m_model;
-    GameWidget* m_widget;
+    ARToolkitWidget* m_widget;
 };
 
 #endif // GAMECONTROLLER_H
