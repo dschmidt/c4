@@ -3,6 +3,7 @@ qt4_wrap_ui(c4_UI MainWindow.ui)
 
 add_executable(c4
     ARToolkitWidget.cpp
+    GameController.cpp
     main.cpp
     MainWindow.cpp
     Player.cpp
