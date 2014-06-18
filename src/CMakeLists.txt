@@ -3,6 +3,10 @@ qt4_wrap_ui(c4_UI MainWindow.ui)
 
 add_executable(c4
     ARToolkitWidget.cpp
+    gamewidget.cpp
+    glchip.cpp
+    glfield.cpp
+    globject.cpp
     main.cpp
     MainWindow.cpp
     ${c4_UI}
