@@ -9,6 +9,7 @@ add_executable(c4
     ${c4_UI}
 
     Players/HumanPlayer.cpp
+    Players/AiPlayer.cpp
 )
 
 target_link_libraries(c4
