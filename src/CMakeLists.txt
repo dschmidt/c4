@@ -1,6 +1,8 @@
 
 qt4_wrap_ui(c4_UI MainWindow.ui)
 
+include_directories(${ARTOOLKIT_INCLUDE_DIR})
+
 add_executable(c4
     ARToolkitWidget.cpp
     GameWidget.cpp
