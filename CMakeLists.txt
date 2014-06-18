@@ -11,5 +11,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(ARToolKit REQUIRED)
 
+find_package(OpenGL REQUIRED)
+add_definitions(${OpenGL_DEFINITIONS})
+
 add_subdirectory(src)
 
