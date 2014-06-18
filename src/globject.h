@@ -1,8 +1,11 @@
 #ifndef GLOBJECT_H
 #define GLOBJECT_H
 
-class GlObject
+#include <QObject>
+
+class GlObject : public QObject
 {
+    Q_OBJECT
 public:
     GlObject();
 

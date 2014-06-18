@@ -7,6 +7,9 @@ class GameWidget : public ARToolkitWidget
 {
 public:
     GameWidget();
+
+signals:
+    void arChipDropped();
 };
 
 #endif // GAMEWIDGET_H

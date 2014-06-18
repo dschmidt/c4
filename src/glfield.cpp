@@ -8,3 +8,8 @@ void GlField::draw()
 {
 
 }
+
+void GlField::onDataChipDropped(bool success, int column, Player *currentPlayer)
+{
+
+}
