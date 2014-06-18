@@ -8,6 +8,8 @@ class MainWindow;
 }
 
 class ARToolkitWidget;
+class GameModel;
+class GameController;
 
 class MainWindow : public QMainWindow
 {
@@ -18,8 +20,12 @@ public:
     ~MainWindow();
 
 private:
+    void setupGame();
+
     Ui::MainWindow* m_ui;
     ARToolkitWidget*  m_gameWidget;
+    GameModel* m_model;
+    GameController* m_controller;
 };
 
 #endif // MAINWINDOW_H

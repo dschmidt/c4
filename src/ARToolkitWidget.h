@@ -13,6 +13,7 @@ class ARToolkitWidget;
 }
 
 class Pattern;
+class GameModel;
 
 class ARToolkitWidget : public QGLWidget
 {
@@ -21,6 +22,11 @@ class ARToolkitWidget : public QGLWidget
 public:
     explicit ARToolkitWidget(QWidget* parent = 0);
     virtual ~ARToolkitWidget();
+
+    void setGameModel(GameModel* model);
+
+signals:
+    void arChipDropped(int column);
 
 protected:
     void initializeGL();
@@ -52,6 +58,8 @@ private:
     int gDrawRotate;
     float gDrawRotateAngle;			// For use in drawing.
 
+
+    GameModel* m_model;
 };
 
 #endif // ARTOOLKIWWIDGET_H
