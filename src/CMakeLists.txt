@@ -21,9 +21,7 @@ add_executable(c4
 target_link_libraries(c4
     GL
     GLEW
-    AR
-    ARgsub_lite
-    ARvideo
+    ${ARTOOLKIT_LIBRARIES}
     ${QT_LIBRARIES}
 )
 
