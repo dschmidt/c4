@@ -7,9 +7,15 @@ add_executable(c4
     glchip.cpp
     glfield.cpp
     globject.cpp
+    GameController.cpp
+    GameModel.cpp
     main.cpp
     MainWindow.cpp
+    Player.cpp
     ${c4_UI}
+
+    Players/HumanPlayer.cpp
+    Players/AiPlayer.cpp
 )
 
 target_link_libraries(c4
