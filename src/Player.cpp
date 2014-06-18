@@ -1,7 +1,8 @@
 #include "Player.h"
 
-Player::Player(const QString &name)
-    : m_name(name)
+Player::Player(const QString &name, QObject* parent)
+    : QObject(parent)
+    , m_name(name)
 {
 
 }

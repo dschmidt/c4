@@ -8,7 +8,7 @@ class Player : public QObject
     Q_OBJECT
 
 public:
-    Player(const QString& name);
+    Player(const QString& name, QObject* parent = 0);
     virtual ~Player();
 
     virtual const QString name() const;
