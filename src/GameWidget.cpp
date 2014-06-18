@@ -6,8 +6,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 
-GameWidget::GameWidget(QWidget* parent)
-    : ARToolkitWidget(parent)
+GameWidget::GameWidget(QWidget *parent) : ARToolkitWidget(parent)
 {
 #ifdef ARTOOLKIT_FOUND
     pattChip = loadPattern("patt.hiro");

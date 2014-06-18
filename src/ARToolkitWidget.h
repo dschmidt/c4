@@ -4,6 +4,8 @@
 
 #include "Config.h"
 
+#include <QVector>
+
 namespace Ui {
 class ARToolkitWidget;
 }
@@ -30,6 +32,7 @@ public:
     explicit ARToolkitWidget(QWidget* parent = 0);
     virtual ~ARToolkitWidget();
 
+    void setGameModel(GameModel* model);
     void addPattern(Pattern* patt);
     virtual void drawObjects();
     QVector<Pattern*> patterns;

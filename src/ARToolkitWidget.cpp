@@ -2,12 +2,11 @@
 
 #include "ARToolkitWidget.h"
 
+#ifdef ARTOOLKIT_FOUND
+
 #include "Pattern.h"
 
 #include <QDebug>
-
-
-#ifdef ARTOOLKIT_FOUND
 
 
 #include <QApplication>
