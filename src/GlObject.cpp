@@ -1,4 +1,4 @@
-#include "globject.h"
+#include "GlObject.h"
 
 GlObject::GlObject()
 {

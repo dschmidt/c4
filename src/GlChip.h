@@ -1,7 +1,7 @@
 #ifndef GLCHIP_H
 #define GLCHIP_H
 
-#include "globject.h"
+#include "GlObject.h"
 #include <QColor>
 
 class GlChip : public GlObject

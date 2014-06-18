@@ -1,4 +1,4 @@
-#include "glchip.h"
+#include "GlChip.h"
 
 GlChip::GlChip()
 {

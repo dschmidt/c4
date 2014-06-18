@@ -1,4 +1,4 @@
-#include "glfield.h"
+#include "GlField.h"
 
 GlField::GlField()
 {

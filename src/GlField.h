@@ -1,7 +1,7 @@
 #ifndef GLFIELD_H
 #define GLFIELD_H
 
-#include "globject.h"
+#include "GlObject.h"
 
 class Player;
 
