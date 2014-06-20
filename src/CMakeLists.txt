@@ -1,6 +1,16 @@
 
 qt4_wrap_ui(c4_UI MainWindow.ui)
 
+include_directories(${OpenGL_INCLUDE_DIRS})
+
+configure_file(Config.h.in ${CMAKE_CURRENT_BINARY_DIR}/Config.h)
+
+
+if(ARTOOLKIT_FOUND)
+    include_directories(${ARTOOLKIT_INCLUDE_DIR})
+    list(APPEND c4_LIBRARIES "${ARTOOLKIT_LIBRARIES}")
+endif()
+
 add_executable(c4
     ARToolkitWidget.cpp
     GameWidget.cpp
@@ -20,11 +30,8 @@ add_executable(c4
 )
 
 target_link_libraries(c4
-    GL
-    GLEW
-    AR
-    ARgsub_lite
-    ARvideo
+    ${OPENGL_LIBRARIES}
+    ${c4_LIBRARIES}
     ${QT_LIBRARIES}
 )
 

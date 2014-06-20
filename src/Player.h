@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include <QObject>
+#include <QString>
 
 class Player : public QObject
 {

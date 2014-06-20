@@ -1,13 +1,8 @@
 #ifndef ARTOOLKIWWIDGET_H
 #define ARTOOLKIWWIDGET_H
 
-#include <QGLWidget>
-#include <QVector>
-#include <AR/config.h>
-#include <AR/video.h>
-#include <AR/param.h>			// arParamDisp()
-#include <AR/ar.h>
-#include <AR/gsub_lite.h>
+
+#include "Config.h"
 
 namespace Ui {
 class ARToolkitWidget;
@@ -15,6 +10,17 @@ class ARToolkitWidget;
 
 class Pattern;
 class GameModel;
+
+
+#ifdef ARTOOLKIT_FOUND
+
+#include <QGLWidget>
+#include <QVector>
+#include <AR/config.h>
+#include <AR/video.h>
+#include <AR/param.h>			// arParamDisp()
+#include <AR/ar.h>
+#include <AR/gsub_lite.h>
 
 class ARToolkitWidget : public QGLWidget
 {
@@ -28,9 +34,6 @@ public:
     void addPattern(Pattern* patt);
     virtual void drawObjects();
     QVector<Pattern*> patterns;
-
-signals:
-    void arChipDropped(int column);
 
 protected:
     void initializeGL();
@@ -76,5 +79,23 @@ private:
 
     GameModel* m_model;
 };
+#else
+
+#include <QLabel>
+
+class ARToolkitWidget : public QLabel
+{
+public:
+    ARToolkitWidget(QWidget* parent = 0) : QLabel("BUMMER", parent)
+    {
+
+    }
+
+    void setGameModel(GameModel* model)
+    {
+    }
+};
+
+#endif
 
 #endif // ARTOOLKIWWIDGET_H

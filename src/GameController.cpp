@@ -16,15 +16,21 @@ void GameController::setGameModel( GameModel* model )
     m_model = model;
 }
 
+void GameController::setGameWidget( ARToolkitWidget* widget )
+{
+    m_widget = widget;
+}
+
+
 void GameController::startGame()
 {
-        // Player(const QString& name, QObject* parent = 0);
-    HumanPlayer* player1 = 0; //new HumanPlayer(QLatin1String("Knalltuete"), this);
+    HumanPlayer* player1 = new HumanPlayer(QLatin1String("Knalltuete"), this);
+    player1->setGameWidget(m_widget);
     m_model->setPlayer1(player1);
     connect(player1, SIGNAL(moved(int)), SLOT(onMoved(int)));
 
 
-    Player* player2 = 0; //new AiPlayer(QLatin1String("Hans Wurst"), this);
+    Player* player2 = new AiPlayer(QLatin1String("Hans Wurst"), this);
     m_model->setPlayer2(player2);
 
 

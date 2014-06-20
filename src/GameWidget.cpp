@@ -3,10 +3,12 @@
 #include "GlField.h"
 #include "Pattern.h"
 
-#include <QVector>
+#include <QDebug>
 
-GameWidget::GameWidget(QWidget *parent) : ARToolkitWidget(parent)
+GameWidget::GameWidget(QWidget* parent)
+    : ARToolkitWidget(parent)
 {
+#ifdef ARTOOLKIT_FOUND
     pattChip = loadPattern("patt.hiro");
     pattField = loadPattern("patt.kanji");
     addPattern(pattChip);
@@ -14,10 +16,12 @@ GameWidget::GameWidget(QWidget *parent) : ARToolkitWidget(parent)
 
     chip = new GlChip();
     field = new GlField();
+#endif
 }
 
 void GameWidget::drawObjects()
 {
+#ifdef ARTOOLKIT_FOUND
     GLdouble m[16];
     if (pattChip->found) {
 
@@ -41,4 +45,14 @@ void GameWidget::drawObjects()
         field->draw();
 
     } // gPatt->found
+#endif
+}
+
+void GameWidget::mousePressEvent ( QMouseEvent * event )
+{
+    int column = qrand() * 6;
+
+    qDebug() << Q_FUNC_INFO << column;
+
+    //emit arChipDropped(column);
 }

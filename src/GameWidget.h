@@ -9,7 +9,7 @@ class GlField;
 class GameWidget : public ARToolkitWidget
 {
 public:
-    GameWidget(QWidget *parent);
+    GameWidget(QWidget *parent = 0);
     void drawObjects();
 
 private:
@@ -19,7 +19,11 @@ private:
     GlField* field;
 
 signals:
-    void arChipDropped();
+//    void arChipDropped(int column);
+
+protected:
+    // HACK
+    virtual void mousePressEvent ( QMouseEvent * event );
 };
 
 #endif // GAMEWIDGET_H
