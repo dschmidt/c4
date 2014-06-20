@@ -21,6 +21,8 @@ signals:
 protected:
     void keyPressEvent( QKeyEvent* event );
     virtual void timerEvent(QTimerEvent* event);
+    // HACK
+    virtual void mousePressEvent(QMouseEvent* event);
 
 private:
     Pattern* pattChip;
@@ -28,6 +30,9 @@ private:
     GlChip* chip;
     GlField* field;
     GameModel* m_model;
+
+signals:
+//    void arChipDropped(int column);
 };
 
 #endif // GAMEWIDGET_H
