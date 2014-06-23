@@ -7,7 +7,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class ARToolkitWidget;
+class GameWidget;
 class GameModel;
 class GameController;
 
@@ -23,7 +23,7 @@ private:
     void setupGame();
 
     Ui::MainWindow* m_ui;
-    ARToolkitWidget*  m_gameWidget;
+    GameWidget*  m_gameWidget;
     GameModel* m_model;
     GameController* m_controller;
 };
