@@ -30,7 +30,6 @@ public:
     explicit ARToolkitWidget(QWidget* parent = 0);
     virtual ~ARToolkitWidget();
 
-    void setGameModel(GameModel* model);
     void addPattern(Pattern* patt);
     virtual void drawObjects();
     QVector<Pattern*> patterns;
@@ -75,23 +74,17 @@ private:
     ARGL_CONTEXT_SETTINGS_REF gArglSettings;
     int gDrawRotate;
     float gDrawRotateAngle;			// For use in drawing.
-
-
-    GameModel* m_model;
 };
 #else
 
-#include <QLabel>
+#include <QTextEdit>
 
-class ARToolkitWidget : public QLabel
+class ARToolkitWidget : public QTextEdit
 {
+    Q_OBJECT
+
 public:
-    ARToolkitWidget(QWidget* parent = 0) : QLabel("BUMMER", parent)
-    {
-
-    }
-
-    void setGameModel(GameModel* model)
+    ARToolkitWidget(QWidget* parent = 0) : QTextEdit(parent)
     {
     }
 };

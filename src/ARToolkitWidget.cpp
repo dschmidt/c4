@@ -2,11 +2,14 @@
 
 #include "ARToolkitWidget.h"
 
-#ifdef ARTOOLKIT_FOUND
-
 #include "Pattern.h"
 
 #include <QDebug>
+
+
+#ifdef ARTOOLKIT_FOUND
+
+
 #include <QApplication>
 
 
@@ -33,10 +36,15 @@ ARToolkitWidget::ARToolkitWidget(QWidget *parent)
     gArglSettings = NULL;
     gDrawRotate = FALSE;
     gDrawRotateAngle = 0;			// For use in drawing.
+
+
+    grabKeyboard();
 }
 
 ARToolkitWidget::~ARToolkitWidget()
 {
+    releaseKeyboard();
+
     arglCleanup(gArglSettings);
     arVideoCapStop();
     arVideoClose();
@@ -339,11 +347,5 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
         updateGL();
     }
 }
-
-void ARToolkitWidget::setGameModel(GameModel* model)
-{
-    m_model = model;
-}
-
 
 #endif

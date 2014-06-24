@@ -4,6 +4,7 @@
 #include "Pattern.h"
 
 #include <QDebug>
+#include <QKeyEvent>
 
 GameWidget::GameWidget(QWidget* parent)
     : ARToolkitWidget(parent)
@@ -68,11 +69,47 @@ void GameWidget::timerEvent(QTimerEvent* event)
     }
 }
 
-void GameWidget::mousePressEvent(QMouseEvent* event)
+void GameWidget::keyPressEvent(QKeyEvent* event)
 {
-    int column = qrand() * 6;
+    int column = 0;
+    switch(event->key())
+    {
+        case Qt::Key_1:
+            column = 1;
+            break;
 
-    qDebug() << Q_FUNC_INFO << column;
+        case Qt::Key_2:
+            column = 2;
+            break;
 
-    //emit arChipDropped(column);
+        case Qt::Key_3:
+            column = 3;
+            break;
+
+        case Qt::Key_4:
+            column = 4;
+            break;
+
+        case Qt::Key_5:
+            column = 5;
+            break;
+
+        case Qt::Key_6:
+            column = 6;
+            break;
+
+        case Qt::Key_7:
+            column = 7;
+            break;
+    }
+
+    if(column > 0) {
+        qDebug() << "number pressed" << column;
+        emit arChipDropped(column);
+    }
+}
+
+void GameWidget::setGameModel(GameModel* model)
+{
+    m_model = model;
 }
