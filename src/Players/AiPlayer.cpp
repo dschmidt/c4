@@ -11,6 +11,9 @@ void AiPlayer::move(Player* field[6][7])
 {
     qDebug() << Q_FUNC_INFO;
 
+    emit moved(4);
+    return;
+
     bool found = false;
     int i,j;
     for(i=0;i<6;i++ ){
