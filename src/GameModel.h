@@ -12,8 +12,14 @@ public:
     explicit GameModel( QObject *parent = 0 );
     void dropChip( int column, Player* currentPlayer );
 
+    Player* player1() const;
     void setPlayer1(Player* player1);
+
+    Player* player2() const;
     void setPlayer2(Player* player2);
+
+
+    Player* field[6][7];
 
 signals:
     void dataChipDropped( bool success, int column, Player* player );

@@ -2,6 +2,8 @@
 
 #include "../ARToolkitWidget.h"
 
+#include <QDebug>
+
 HumanPlayer::HumanPlayer(const QString& name, QObject* parent)
     : Player(name, parent)
     , m_gameWidget(0)
@@ -10,6 +12,7 @@ HumanPlayer::HumanPlayer(const QString& name, QObject* parent)
 
 void HumanPlayer::move(Player* field[6][7])
 {
+    qDebug() << Q_FUNC_INFO;
 }
 
 void HumanPlayer::setGameWidget(ARToolkitWidget *gameWidget)

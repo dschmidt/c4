@@ -1,5 +1,7 @@
 #include "AiPlayer.h"
 
+#include <QDebug>
+
 AiPlayer::AiPlayer(const QString& name, QObject* parent)
     : Player(name, parent)
 {
@@ -7,6 +9,7 @@ AiPlayer::AiPlayer(const QString& name, QObject* parent)
 
 void AiPlayer::move(Player* field[6][7])
 {
+    qDebug() << Q_FUNC_INFO;
 
     bool found = false;
     int i,j;

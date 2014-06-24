@@ -19,6 +19,7 @@ public:
 
 private slots:
     void onMoved(int column);
+    void onDataChipDropped(bool success, int column, Player* player);
 
 private:
     Player* m_currentPlayer;
