@@ -21,3 +21,8 @@ tags
 .DS_Store
 *.autosave
 Doxyfile
+C4.config
+C4.creator
+C4.files
+C4.includes
+
