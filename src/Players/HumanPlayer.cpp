@@ -8,7 +8,7 @@ HumanPlayer::HumanPlayer(const QString& name, QObject* parent)
 {
 }
 
-void HumanPlayer::move()
+void HumanPlayer::move(Player* field[6][7])
 {
 }
 
