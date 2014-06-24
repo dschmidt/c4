@@ -10,8 +10,11 @@ void AiPlayer::move(Player* field[6][7])
 
     bool found = false;
     int i,j;
-    for(i=0;i<6;i++ ){
-        for(j=0;j<7;j++){
+    for(i=0;i<7;i++){
+        targetRows[i]=-1;
+    }
+    for(j=0;j<7;j++){
+        for(i=0;i<6;i++ ){
             if(field[i][j]== NULL && i>0){
                 if(field[i-1][j]!= NULL){
                     targetRows[j] = i;
@@ -21,7 +24,7 @@ void AiPlayer::move(Player* field[6][7])
         }
     }
     for(i=0;i<7;i++){
-        if(targetRows[i] != NULL){
+        if(targetRows[i] >= 0){
             found = check4(targetRows[i],i,field);
         }
         if(found){
