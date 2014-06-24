@@ -15,15 +15,6 @@ public:
     void drawObjects();
     void setGameModel(GameModel* model);
 
-signals:
-    void arChipDropped(int column);
-
-protected:
-    void keyPressEvent( QKeyEvent* event );
-    virtual void timerEvent(QTimerEvent* event);
-    // HACK
-    virtual void mousePressEvent(QMouseEvent* event);
-
 private:
     Pattern* pattChip;
     Pattern* pattField;
@@ -32,7 +23,13 @@ private:
     GameModel* m_model;
 
 signals:
-//    void arChipDropped(int column);
+    void arChipDropped(int column);
+
+protected:
+    void keyPressEvent( QKeyEvent* event );
+    virtual void timerEvent(QTimerEvent* event);
+    // HACK
+    virtual void mousePressEvent(QMouseEvent* event);
 };
 
 #endif // GAMEWIDGET_H

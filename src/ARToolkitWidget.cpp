@@ -14,7 +14,7 @@
 
 void ARToolkitWidget::addPattern(Pattern *patt)
 {
-    patterns.append(patt);
+    m_patterns.append(patt);
 }
 
 ARToolkitWidget::ARToolkitWidget(QWidget *parent)
@@ -161,10 +161,6 @@ void ARToolkitWidget::initializeGL()
     char *vconf = "v4l2src ! ffmpegcolorspace ! capsfilter caps=video/x-raw-rgb,bpp=24,width=640,height=480 ! identity name=artoolkit ! fakesink";
 #endif
 
-
-    const char *patt_name  = "patt.hiro";
-    const char *patt_name2 = "patt.kanji";
-
     // ----------------------------------------------------------------------------
     // Hardware setup.
     //
@@ -182,9 +178,6 @@ void ARToolkitWidget::initializeGL()
     debugReportMode(gArglSettings);
     glEnable(GL_DEPTH_TEST);
     arUtilTimerReset();
-
-//    addPattern(loadPattern(patt_name));
-//    addPattern(loadPattern(patt_name2));
 }
 
 void ARToolkitWidget::resizeGL(int width, int height)
@@ -251,7 +244,7 @@ void ARToolkitWidget::drawCube(void)
 void ARToolkitWidget::drawObjects()
 {
     GLdouble m[16];
-    foreach (Pattern* patt, patterns)
+    foreach (Pattern* patt, m_patterns)
     {
         if (patt->found) {
 
@@ -322,7 +315,7 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
             exit(-1);
         }
 
-        foreach (Pattern* patt, patterns)
+        foreach (Pattern* patt, m_patterns)
         {
             // Check through the marker_info array for highest confidence
             // visible marker matching our preferred pattern.
