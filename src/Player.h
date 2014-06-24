@@ -13,7 +13,7 @@ public:
     virtual ~Player();
 
     virtual const QString name() const;
-    virtual void move() = 0;
+    virtual void move(Player* field[6][7]) = 0;
 
 signals:
     void moved(int column);

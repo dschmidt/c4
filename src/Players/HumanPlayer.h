@@ -10,7 +10,7 @@ class HumanPlayer : public Player
 public:
     HumanPlayer(const QString& name, QObject* parent = 0);
 
-    void move();
+    void move(Player *field[6][7]);
 
     void setGameWidget(ARToolkitWidget* gameWidget);
 
