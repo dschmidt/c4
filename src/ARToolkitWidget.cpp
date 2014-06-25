@@ -182,6 +182,8 @@ void ARToolkitWidget::initializeGL()
     }
     debugReportMode(gArglSettings);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     arUtilTimerReset();
 
 //    addPattern(loadPattern(patt_name));
