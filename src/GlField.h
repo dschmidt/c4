@@ -14,9 +14,6 @@ public:
     GlField(QWidget *parent = 0);
     void draw();
 
-private:
-    GameModel* m_model;
-
 public slots:
     void onDataChipDropped(bool success, int column, Player* currentPlayer);
 };
