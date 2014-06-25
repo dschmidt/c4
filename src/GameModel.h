@@ -23,7 +23,7 @@ public:
 
 signals:
     void dataChipDropped( bool success, int column, Player* player );
-    void gameFinished();
+    void gameFinished(Player* winner);
 
 private:
     Player* m_player1;

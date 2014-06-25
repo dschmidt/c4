@@ -2,12 +2,15 @@
 #include "GlChip.h"
 #include "GlField.h"
 #include "Pattern.h"
+#include "Player.h"
+#include "GameModel.h"
 
 #include <QDebug>
 #include <QKeyEvent>
 
 GameWidget::GameWidget(QWidget* parent)
     : ARToolkitWidget(parent)
+    , m_model(0)
 {
 #ifdef ARTOOLKIT_FOUND
     pattChip = loadPattern("patt.hiro");
@@ -111,5 +114,15 @@ void GameWidget::keyPressEvent(QKeyEvent* event)
 
 void GameWidget::setGameModel(GameModel* model)
 {
+    if(m_model){
+        m_model->disconnect(this);
+    }
     m_model = model;
+    connect(m_model, SIGNAL(gameFinished(Player*)), SLOT(onGameFinished(Player*)));
+}
+
+void GameWidget::onGameFinished(Player *winner)
+{
+    qDebug() << Q_FUNC_INFO << winner->name() << "won the game";
+
 }

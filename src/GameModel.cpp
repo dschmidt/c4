@@ -46,7 +46,7 @@ void GameModel::dropChip(int column, Player *currentPlayer)
     emit dataChipDropped(true, column, currentPlayer);
     // check for finished game
     if(checkFinished(row, column, currentPlayer)){
-        emit gameFinished();
+        emit gameFinished(currentPlayer);
     }
 }
 
