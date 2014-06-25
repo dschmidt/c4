@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <string>
 
+using namespace std;
 namespace Ui {
 class MainWindow;
 }
@@ -26,6 +28,17 @@ private:
     GameWidget*  m_gameWidget;
     GameModel* m_model;
     GameController* m_controller;
+    QString activeResolutionWidth;
+    QString activeResolutionHeight;
+    QString playerName;
+    int aiPlayer;
+    QColor playerColor;
+
+private slots:
+    void resolutionChange();
+    void openSettingsDialog();
+    void saveOptions();
+    void loadOptions();
 };
 
 #endif // MAINWINDOW_H

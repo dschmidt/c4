@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -29,7 +29,35 @@
     </property>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuOptions">
+    <property name="title">
+     <string>Options</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionPlayer"/>
+   </widget>
+   <widget class="QMenu" name="menuResolution">
+    <property name="title">
+     <string>Resolution</string>
+    </property>
+    <addaction name="action640x480"/>
+    <addaction name="action800x600"/>
+    <addaction name="action1920x1080"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHow_to_play"/>
+    <addaction name="separator"/>
+    <addaction name="actionImpressum_2"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuOptions"/>
+   <addaction name="menuResolution"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionExit">
@@ -38,6 +66,68 @@
    </property>
    <property name="shortcut">
     <string>Alt+Q</string>
+   </property>
+  </action>
+  <action name="action640x480">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>640x480</string>
+   </property>
+   <property name="toolTip">
+    <string>Set Resolution to 640x480</string>
+   </property>
+  </action>
+  <action name="action800x600">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>800x600</string>
+   </property>
+   <property name="toolTip">
+    <string>Set Resolution to 800x600</string>
+   </property>
+  </action>
+  <action name="action1920x1080">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>1920x1080</string>
+   </property>
+   <property name="toolTip">
+    <string>Set Resolution to 1920x1080</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>Save all Options</string>
+   </property>
+  </action>
+  <action name="actionHow_to_play">
+   <property name="text">
+    <string>How to play?</string>
+   </property>
+   <property name="toolTip">
+    <string>If you need a guide for this game, play sokmething else...</string>
+   </property>
+  </action>
+  <action name="actionImpressum_2">
+   <property name="text">
+    <string>Impressum</string>
+   </property>
+  </action>
+  <action name="actionPlayer">
+   <property name="text">
+    <string>Player</string>
    </property>
   </action>
  </widget>
