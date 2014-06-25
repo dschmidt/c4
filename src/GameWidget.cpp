@@ -118,6 +118,7 @@ void GameWidget::keyPressEvent(QKeyEvent* event)
 
     if(column > 0) {
         qDebug() << "number pressed" << column;
+        column--;
         emit arChipDropped(column);
     }
 }
