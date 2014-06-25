@@ -11,7 +11,7 @@ GlChip::GlChip(QObject *parent)
 void GlChip::draw()
 {
     // Colour cube data.
-    static GLuint polyList = 0;
+    GLuint polyList = 0;
 
     GLUquadricObj *quadric;
     quadric = gluNewQuadric();
