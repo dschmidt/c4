@@ -1,8 +1,12 @@
 #include "GlField.h"
+#include "GlChip.h"
+#include "GameWidget.h"
+#include "GameModel.h"
 
-#include <GL/glew.h>
+#include <QDebug>
+//#include <GL/glew.h>
 
-GlField::GlField()
+GlField::GlField(QWidget* parent)
 {
 }
 
@@ -11,6 +15,36 @@ void GlField::draw()
     static GLuint polyList = 0;
     float fSize = 0.5f;
     long f, i;
+
+    int x,y;
+
+    for (y = 0; y < 6; y++)
+    {
+        for (x = 0; x < 7; x++)
+        {
+            glPushMatrix();
+            glTranslatef(float(x) - 3.0f, 0.5f, float(y) + 0.5f);
+            glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+
+            GameWidget* widget = qobject_cast<GameWidget*>(parent());
+            m_model = widget ? widget->gameModel() : 0;
+
+            if (m_model != NULL && m_model->field[y][x] != NULL)
+            {
+                qDebug() << "chip (" << x <<"," << y <<") visible";
+
+                GlChip drawingChip;
+//                drawingChip.setColor(m_model->field[y][x]->color());
+                drawingChip.draw();
+            }
+            else
+            {
+                qDebug() << "chip (" << x <<"," << y <<") invisible";
+            }
+
+            glPopMatrix();
+        }
+    }
 
 
     const GLfloat field_vertices [8][3] = {
@@ -89,12 +123,12 @@ void GlField::draw()
                 glColor4f(0.137255, 0.137255, 0.556863, 0.950);
                 glVertex3f(field_vertices2[field_faces2[f][i]][0] * fSize, field_vertices2[field_faces2[f][i]][1] * fSize, field_vertices2[field_faces2[f][i]][2] * fSize);
             }
-        for (f = 0; f < field_num_faces2; f=f+5)
+        for (f = 1; f < field_num_faces2; f=f+5)
             for (i = 0; i < 4; i++) {
                 glColor4f(0.137255, 0.137255, 0.556863, 0.650);
                 glVertex3f(field_vertices2[field_faces2[f][i]][0] * fSize, field_vertices2[field_faces2[f][i]][1] * fSize, field_vertices2[field_faces2[f][i]][2] * fSize);
             }
-        for (f = 1; f < field_num_faces2; f=f+5)
+        for (f = 0; f < field_num_faces2; f=f+5)
             for (i = 0; i < 4; i++) {
                 glColor4f(0.137255, 0.137255, 0.556863, 0.650);
                 glVertex3f(field_vertices2[field_faces2[f][i]][0] * fSize, field_vertices2[field_faces2[f][i]][1] * fSize, field_vertices2[field_faces2[f][i]][2] * fSize);

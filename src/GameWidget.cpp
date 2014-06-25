@@ -19,7 +19,7 @@ GameWidget::GameWidget(QWidget* parent)
     addPattern(pattField);
 
     chip = new GlChip();
-    field = new GlField();
+    field = new GlField(this);
 #endif
 }
 
@@ -118,8 +118,7 @@ void GameWidget::keyPressEvent(QKeyEvent* event)
 
     if(column > 0) {
         qDebug() << "number pressed" << column;
-        column--;
-        emit arChipDropped(column);
+        emit arChipDropped(column - 1);
     }
 }
 
@@ -140,4 +139,10 @@ void GameWidget::onGameFinished(Player *winner)
         qDebug() << Q_FUNC_INFO << "Field is full...Game is over";
     }
 
+}
+
+
+GameModel* GameWidget::gameModel()
+{
+    return m_model;
 }
