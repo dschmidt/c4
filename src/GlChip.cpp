@@ -25,7 +25,7 @@ void GlChip::draw()
         glEndList ();
     }
     glPushMatrix(); // Save world coordinate system.
-    glTranslatef(2.0, 0.0, 0.5); // Place base of chip on marker surface.
+    glTranslatef(0.0, 0.0, 0.5); // Place base of chip on marker surface.
     //glRotatef(gDrawRotateAngle, 0.0, 0.0, 1.0); // Rotate about z axis.
     glDisable(GL_LIGHTING);	// Just use colours.
     glCallList(polyList);	// Draw the cube.
