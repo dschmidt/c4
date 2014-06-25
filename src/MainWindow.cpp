@@ -5,6 +5,9 @@
 #include "GameWidget.h"
 #include "GameModel.h"
 #include "GameController.h"
+#include "Settings.h"
+
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,6 +16,26 @@ MainWindow::MainWindow(QWidget *parent)
     , m_controller(0)
 
 {
+    // instantiate settings once here
+    new Settings(this);
+
+    // acces them later on via instance()
+    Settings* s = Settings::instance();
+
+
+    qDebug() << "***** Current settings *****";
+    qDebug() << "Player name" << s->playerName();
+    qDebug() << "Player color" << s->playerColor();
+    qDebug();
+    qDebug() << "AI name" << s->aiName();
+    qDebug() << "AI color" << s->aiColor();
+    qDebug() << "AI level" << s->aiLevel();
+    qDebug();
+    qDebug() << "Camera width" << s->cameraWidth();
+    qDebug() << "Camera height" << s->cameraHeight();
+    qDebug();
+
+
     m_ui->setupUi(this);
     m_ui->statusbar->setVisible(false);
 
