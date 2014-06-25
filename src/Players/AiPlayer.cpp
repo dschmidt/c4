@@ -1,6 +1,7 @@
 #include "AiPlayer.h"
 
 #include <QDebug>
+#include <ctime>
 
 AiPlayer::AiPlayer(const QString& name, QObject* parent)
     : Player(name, parent)
@@ -42,6 +43,7 @@ void AiPlayer::move(Player* field[6][7])
     }
     //default: random drop
     int random;
+    srand(time(0));
     for(i=0;i<10;i++){
         random = rand()%7;
         if(targetRows[random]>=0){
