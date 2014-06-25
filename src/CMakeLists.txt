@@ -27,6 +27,7 @@ list(APPEND c4_SOURCES
     MainWindow.cpp
     Pattern.cpp
     Player.cpp
+    SettingsDialog.cpp
 
     Players/HumanPlayer.cpp
     Players/AiPlayer.cpp
