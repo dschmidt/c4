@@ -4,6 +4,7 @@
 
 GlChip::GlChip()
 {
+    m_color.setRgbF(1.0, 0.0, 0.0);
 }
 
 void GlChip::draw()
@@ -19,7 +20,7 @@ void GlChip::draw()
         polyList = glGenLists (1);
         glNewList(polyList, GL_COMPILE);
 
-        glColor3f (1.0, 0.0, 0.0);
+        glColor3f (m_color.redF(), m_color.greenF(), m_color.blueF());
         gluDisk(quadric,0.0,0.4,32,32);
         gluCylinder(quadric, 0.4, 0.4, 0.1, 32, 32);
         glEndList ();
@@ -31,4 +32,14 @@ void GlChip::draw()
     glCallList(polyList);	// Draw the cube.
     glPopMatrix();	// Restore world coordinate system.
 
+}
+
+const QColor GlChip::color() const
+{
+    return m_color;
+}
+
+void GlChip::setColor(const QColor& color)
+{
+    m_color = color;
 }
