@@ -15,6 +15,7 @@ public:
     GameWidget(QWidget *parent = 0);
     void drawObjects();
     void setGameModel(GameModel* model);
+    GameModel* gameModel();
 
 signals:
     void arChipDropped(int column);
