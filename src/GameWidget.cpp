@@ -4,6 +4,7 @@
 #include "Pattern.h"
 #include "Player.h"
 #include "GameModel.h"
+#include "Config.h"
 
 #include <QDebug>
 #include <QKeyEvent>
