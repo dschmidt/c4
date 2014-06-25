@@ -1,5 +1,6 @@
 #include "GlObject.h"
 
-GlObject::GlObject()
+GlObject::GlObject(QObject* parent)
+    : QObject(parent)
 {
 }

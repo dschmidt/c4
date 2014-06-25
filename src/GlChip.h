@@ -7,7 +7,7 @@
 class GlChip : public GlObject
 {
 public:
-    GlChip();
+    GlChip(QObject *parent = 0);
     void draw();
 
     const QColor color() const;

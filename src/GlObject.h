@@ -7,7 +7,7 @@ class GlObject : public QObject
 {
     Q_OBJECT
 public:
-    GlObject();
+    GlObject(QObject* parent = 0);
 
     virtual void draw() = 0;
 };

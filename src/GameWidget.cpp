@@ -19,7 +19,7 @@ GameWidget::GameWidget(QWidget* parent)
     addPattern(pattChip);
     addPattern(pattField);
 
-    chip = new GlChip();
+    chip = new GlChip(this);
     field = new GlField(this);
 #endif
 }
