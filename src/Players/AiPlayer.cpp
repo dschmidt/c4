@@ -15,8 +15,11 @@ void AiPlayer::move(Player* field[6][7])
     }
     for(j=0;j<7;j++){
         for(i=0;i<6;i++ ){
-            if(field[i][j]== NULL && i>0){
-                if(field[i-1][j]!= NULL){
+            if(field[i][j]== NULL){
+                if(i==0){
+                    targetRows[j] = 0;
+                    break;
+                }else if(field[i-1][j]!= NULL){
                     targetRows[j] = i;
                     break;
                 }
@@ -29,6 +32,23 @@ void AiPlayer::move(Player* field[6][7])
         }
         if(found){
             emit moved(i);
+            return;
+        }
+    }
+    //default: random drop
+    int random;
+    for(i=0;i<10;i++){
+        random = rand()%7;
+        if(targetRows[random]>=0){
+            emit moved(random);
+            return;
+        }
+    }
+    //if random drop fails
+    for(i=0;i<7;i++){
+        if(targetRows[i]>=0){
+            emit moved(i);
+            return;
         }
     }
 
@@ -78,7 +98,7 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
         }
     }
 
-    //for the diagonals
+    //for the /-diagonal
     // i :: row ; j :: column
     counter = 0;
     int yAchsenSchnitt = row-column;
@@ -99,6 +119,58 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
                 tempPlayer = field[i][j];
             }
         }else if(i==row && j==column){
+            if(counter >= 3){
+                return true;
+            }else if(counter == 2 && column<6 && row<5){
+                if(tempPlayer==field[row+1][column+1]){
+                    return true;
+                }
+            }else if(counter == 1 && column<5 && row<4){
+                if(tempPlayer==field[row+1][column+1] && tempPlayer==field[row+2][column+2]){
+                    return true;
+                }
+            }else if(column<4 && row<3){
+                if(tempPlayer==field[row+1][column+1] && tempPlayer==field[row+2][column+2] && tempPlayer==field[row+3][column+3]){
+                    return true;
+                }
+            }
+
+        }
+    }
+    //for the \-diagonal
+    counter = 0;
+    yAchsenSchnitt = row+column;
+    if(yAchsenSchnitt < 6){
+        i = yAchsenSchnitt;
+        j = 0;
+    }else{
+        i = 5;
+        j = yAchsenSchnitt-5;
+    }
+    for(;i>=0 && j<7;i--,j++){
+        if(field[i][j]!= NULL){
+            if(field[i][j] == tempPlayer){
+                counter++;
+            }else{
+                counter = 1;
+                tempPlayer = field[i][j];
+            }
+        }else if(i==row && j==column){
+            if(counter >= 3){
+                return true;
+            }else if(counter == 2 && column<6 && row>0){
+                if(tempPlayer==field[row-1][column+1]){
+                    return true;
+                }
+            }else if(counter == 1 && column<5 && row>1){
+                if(tempPlayer==field[row-1][column+1] && tempPlayer==field[row-2][column+2]){
+                    return true;
+                }
+            }else if(column<4 && row>2){
+                if(tempPlayer==field[row-1][column+1] && tempPlayer==field[row-2][column+2] && tempPlayer==field[row-3][column+3]){
+                    return true;
+                }
+            }
 
         }
     }
