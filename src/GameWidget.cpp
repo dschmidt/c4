@@ -6,7 +6,8 @@
 #include <QDebug>
 #include <QKeyEvent>
 
-GameWidget::GameWidget(QWidget *parent) : ARToolkitWidget(parent)
+GameWidget::GameWidget(QWidget* parent)
+    : ARToolkitWidget(parent)
 {
 #ifdef ARTOOLKIT_FOUND
     pattChip = loadPattern("patt.hiro");
@@ -117,13 +118,4 @@ void GameWidget::keyPressEvent(QKeyEvent* event)
 void GameWidget::setGameModel(GameModel* model)
 {
     m_model = model;
-}
-
-void GameWidget::mousePressEvent(QMouseEvent* event)
-{
-    int column = qrand() * 6;
-
-    qDebug() << Q_FUNC_INFO << column;
-
-    emit arChipDropped(column);
 }
