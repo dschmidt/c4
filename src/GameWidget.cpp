@@ -68,10 +68,14 @@ void GameWidget::timerEvent(QTimerEvent* event)
         qDebug() << Q_FUNC_INFO << vect[0] << " " << vect[1] << " " << vect[2];
 
         int column = (vect[0] + 100) / 28;
-        // restrict to range 0 .. 6
-        column = (column < 0) ? 0 : ((column > 6) ? 6 : column);
-        if (vect[2] < 100)
-            emit arChipDropped(column);
+        if (vect[1] < 200 && column >= 0 && column <= 6)
+        {
+            if (!alreadyEmitted)
+                emit arChipDropped(column);
+            alreadyEmitted = true;
+        }
+        else
+            alreadyEmitted = false;
     }
 }
 
