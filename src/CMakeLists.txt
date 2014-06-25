@@ -9,24 +9,32 @@ configure_file(Config.h.in ${CMAKE_CURRENT_BINARY_DIR}/Config.h)
 if(ARTOOLKIT_FOUND)
     include_directories(${ARTOOLKIT_INCLUDE_DIR})
     list(APPEND c4_LIBRARIES "${ARTOOLKIT_LIBRARIES}")
+
+    list(APPEND c4_SOURCES
+        GlChip.cpp
+        GlField.cpp
+        GlObject.cpp
+    )
 endif()
 
-add_executable(c4
+
+list(APPEND c4_SOURCES
     ARToolkitWidget.cpp
     GameWidget.cpp
-    GlChip.cpp
-    GlField.cpp
-    GlObject.cpp
     GameController.cpp
     GameModel.cpp
     main.cpp
     MainWindow.cpp
     Pattern.cpp
     Player.cpp
-    ${c4_UI}
 
     Players/HumanPlayer.cpp
     Players/AiPlayer.cpp
+)
+
+add_executable(c4
+    ${c4_SOURCES}
+    ${c4_UI}
 )
 
 target_link_libraries(c4
