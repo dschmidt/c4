@@ -17,36 +17,30 @@ void GlField::draw()
     float fSize = 0.5f;
     long f, i;
 
-    int x,y;
+    GameWidget* widget = qobject_cast<GameWidget*>(parent());
+    GameModel* model = widget ? widget->gameModel() : 0;
 
-    for (y = 0; y < 6; y++)
+    if(model)
     {
-        for (x = 0; x < 7; x++)
+        for (int y = 0; y < 6; y++)
         {
-            glPushMatrix();
-            glTranslatef(float(x) - 3.0f, 0.5f, float(y) + 0.5f);
-            glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-
-            GameWidget* widget = qobject_cast<GameWidget*>(parent());
-            m_model = widget ? widget->gameModel() : 0;
-
-            if (m_model != NULL && m_model->field[y][x] != NULL)
+            for (int x = 0; x < 7; x++)
             {
-                qDebug() << "chip (" << x <<"," << y <<") visible";
+                glPushMatrix();
+                glTranslatef(float(x) - 3.0f, 0.5f, float(y) + 0.5f);
+                glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
-                GlChip drawingChip;
-//                drawingChip.setColor(m_model->field[y][x]->color());
-                drawingChip.draw();
+                if (model && model->field[y][x])
+                {
+                    GlChip drawingChip(this);
+                    drawingChip.setColor(model->field[y][x]->color());
+                    drawingChip.draw();
+                }
+
+                glPopMatrix();
             }
-            else
-            {
-                qDebug() << "chip (" << x <<"," << y <<") invisible";
-            }
-
-            glPopMatrix();
-        }
-    }
-
+       }
+   }
 
     const GLfloat field_vertices [8][3] = {
         {7.0, 0.50, 11.0}, {7.0, -0.50, 11.0}, {-7.0, -0.50, 11.0}, {-7.0, 0.50, 11.0},

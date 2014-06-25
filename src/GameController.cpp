@@ -33,12 +33,14 @@ void GameController::setGameWidget( ARToolkitWidget* widget )
 void GameController::startGame()
 {
     HumanPlayer* player1 = new HumanPlayer(QLatin1String("Human"), this);
+    player1->setColor(QColor(Qt::red));
     player1->setGameWidget(m_widget);
 
     m_model->setPlayer1(player1);
     connect(player1, SIGNAL(moved(int)), SLOT(onMoved(int)));
 
     Player* player2 = new AiPlayer(QLatin1String("Ai"), this);
+    player2->setColor(QColor(Qt::yellow));
     m_model->setPlayer2(player2);
     connect(player2, SIGNAL(moved(int)), SLOT(onMoved(int)));
 

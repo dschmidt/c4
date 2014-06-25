@@ -36,6 +36,7 @@ void GameWidget::drawObjects()
         glLoadMatrixd(m);
 
         // All lighting and geometry to be drawn relative to the marker goes here.
+        chip->setColor(QColor(Qt::green));
         chip->draw();
 
     } // gPatt->found
