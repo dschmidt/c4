@@ -5,6 +5,7 @@
 
 class GlChip;
 class GlField;
+class Player;
 
 class GameWidget : public ARToolkitWidget
 {
@@ -21,6 +22,9 @@ signals:
 protected:
     void keyPressEvent( QKeyEvent* event );
     virtual void timerEvent(QTimerEvent* event);
+
+private slots:
+    void onGameFinished(Player* winner);
 
 private:
     Pattern* pattChip;
