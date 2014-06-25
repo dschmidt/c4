@@ -32,6 +32,7 @@ private:
     GlChip* chip;
     GlField* field;
     GameModel* m_model;
+    bool alreadyEmitted;
 };
 
 #endif // GAMEWIDGET_H

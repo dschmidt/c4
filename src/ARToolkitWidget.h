@@ -4,6 +4,8 @@
 
 #include "Config.h"
 
+#include <QVector>
+
 namespace Ui {
 class ARToolkitWidget;
 }
@@ -30,9 +32,9 @@ public:
     explicit ARToolkitWidget(QWidget* parent = 0);
     virtual ~ARToolkitWidget();
 
+    void setGameModel(GameModel* model);
     void addPattern(Pattern* patt);
     virtual void drawObjects();
-    QVector<Pattern*> patterns;
 
 protected:
     void initializeGL();
@@ -51,6 +53,7 @@ protected:
     static const double VIEW_DISTANCE_MIN = 0.1;		// Objects closer to the camera than this will not be displayed.
     static const double VIEW_DISTANCE_MAX = 100.0;		// Objects further away from the camera than this will not be displayed.
 
+    QVector<Pattern*> m_patterns;
 
 private:
     int setupCamera(const char *cparam_name, char *vconf, ARParam *cparam);

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QColor>
 
 class Player : public QObject
 {
@@ -15,11 +16,15 @@ public:
     virtual const QString name() const;
     virtual void move(Player* field[6][7]) = 0;
 
+    const QColor color() const;
+    void setColor(const QColor& color);
+
 signals:
     void moved(int column);
 
 private:
     QString m_name;
+    QColor m_color;
 };
 
 #endif // PLAYER_H
