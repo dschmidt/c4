@@ -28,6 +28,8 @@ signals:
 private:
     Player* m_player1;
     Player* m_player2;
+
+    bool checkFinished(int row, int column, Player* currentPlayer);
 };
 
 #endif // GAMEMODEL_H

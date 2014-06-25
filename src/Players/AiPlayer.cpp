@@ -11,8 +11,7 @@ void AiPlayer::move(Player* field[6][7])
 {
     qDebug() << Q_FUNC_INFO;
 
-    emit moved(4);
-    return;
+
 
     bool found = false;
     int i,j;
@@ -76,7 +75,7 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
     int counter = 0;
     for(i=0;i<7;i++){
         if(field[row][i]!=NULL){
-            if(tempPlayer==NULL){
+            if(counter == 0){
                 tempPlayer = field[row][i];
                 counter = 1;
             }else if(tempPlayer == field[row][i]){
@@ -101,6 +100,8 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
                     return true;
                 }
             }
+        }else{
+            counter = 0;
         }
     }
 
@@ -118,7 +119,10 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
     }
     for(;i<6 && j<7;i++,j++){
         if(field[i][j]!= NULL){
-            if(field[i][j] == tempPlayer){
+            if(counter == 0){
+                tempPlayer = field[i][j];
+                counter = 1;
+            }else if(field[i][j] == tempPlayer){
                 counter++;
             }else{
                 counter = 1;
@@ -141,6 +145,8 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
                 }
             }
 
+        }else{
+            counter = 0;
         }
     }
     //for the \-diagonal
@@ -155,7 +161,10 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
     }
     for(;i>=0 && j<7;i--,j++){
         if(field[i][j]!= NULL){
-            if(field[i][j] == tempPlayer){
+            if(counter == 0){
+                tempPlayer = field[row][i];
+                counter = 1;
+            }else if(field[i][j] == tempPlayer){
                 counter++;
             }else{
                 counter = 1;
@@ -178,6 +187,8 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
                 }
             }
 
+        }else{
+            counter = 0;
         }
     }
 
