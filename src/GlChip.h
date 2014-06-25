@@ -10,8 +10,11 @@ public:
     GlChip();
     void draw();
 
+    const QColor color() const;
+    void setColor(const QColor& color);
+
 private:
-    QColor color;
+    QColor m_color;
 };
 
 #endif // GLCHIP_H
