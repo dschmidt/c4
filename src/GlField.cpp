@@ -7,6 +7,7 @@
 //#include <GL/glew.h>
 
 GlField::GlField(QWidget* parent)
+    : GlObject(parent)
 {
 }
 

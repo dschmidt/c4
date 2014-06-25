@@ -2,7 +2,8 @@
 
 #include <GL/glew.h>
 
-GlChip::GlChip()
+GlChip::GlChip(QObject *parent)
+    : GlObject(parent)
 {
     m_color.setRgbF(1.0, 0.0, 0.0);
 }
