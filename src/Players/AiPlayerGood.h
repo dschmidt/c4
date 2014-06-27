@@ -1,15 +1,14 @@
 #ifndef AIPLAYERGOOD_H
 #define AIPLAYERGOOD_H
 
-#include "../Player.h"
+#include "AiPlayer.h"
 
-class AiPlayerGood : public Player
+class AiPlayerGood : public AiPlayer
 {
 public:
     AiPlayerGood(const QString& name, QObject* parent = 0);
 
     void move(Player *field[6][7]);
-    bool check4(int row, int column, Player *field[6][7]);
 
 
 private:
