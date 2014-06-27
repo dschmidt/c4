@@ -11,7 +11,7 @@ GlChip::GlChip(QObject *parent)
 void GlChip::draw()
 {
     // Colour cube data.
-    GLuint polyList = 0;
+    static GLuint polyList = 0;
 
     GLUquadricObj *quadric;
     quadric = gluNewQuadric();
@@ -21,7 +21,6 @@ void GlChip::draw()
         polyList = glGenLists (1);
         glNewList(polyList, GL_COMPILE);
 
-        glColor3f (m_color.redF(), m_color.greenF(), m_color.blueF());
         gluDisk(quadric,0.0,0.4,32,32);
         gluCylinder(quadric, 0.4, 0.4, 0.1, 32, 32);
         glEndList ();
@@ -30,6 +29,7 @@ void GlChip::draw()
     glTranslatef(0.0, 0.0, 0.5); // Place base of chip on marker surface.
     //glRotatef(gDrawRotateAngle, 0.0, 0.0, 1.0); // Rotate about z axis.
     glDisable(GL_LIGHTING);	// Just use colours.
+    glColor3f (m_color.redF(), m_color.greenF(), m_color.blueF());
     glCallList(polyList);	// Draw the cube.
     glPopMatrix();	// Restore world coordinate system.
 
