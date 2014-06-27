@@ -29,10 +29,6 @@ ARToolkitWidget::ARToolkitWidget(QWidget *parent)
     gARTThreshhold = 100;
     gCallCountMarkerDetect = 0;
 
-    // Markers
-    gPatt = new Pattern();
-    gPatt2 = new Pattern();
-
     // Drawing.
     gArglSettings = NULL;
     gDrawRotate = FALSE;
@@ -49,10 +45,6 @@ ARToolkitWidget::~ARToolkitWidget()
     arglCleanup(gArglSettings);
     arVideoCapStop();
     arVideoClose();
-
-    // Markers
-    delete gPatt;
-    delete gPatt2;
 }
 
 

@@ -68,10 +68,6 @@ private:
     int	gARTThreshhold;
     long gCallCountMarkerDetect;
 
-    // Markers
-    Pattern* gPatt;
-    Pattern* gPatt2;
-
     // Drawing.
     ARParam	gARTCparam;
     ARGL_CONTEXT_SETTINGS_REF gArglSettings;
