@@ -11,16 +11,15 @@ class ARToolkitWidget;
 class Pattern;
 class GameModel;
 
-
-#ifdef ARTOOLKIT_FOUND
-
 #include <QGLWidget>
 #include <QMap>
+#ifdef ARTOOLKIT_FOUND
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/param.h>			// arParamDisp()
 #include <AR/ar.h>
 #include <AR/gsub_lite.h>
+#endif
 
 class GlObject;
 
@@ -56,11 +55,14 @@ protected:
     QMap<Pattern*, GlObject*> m_patterns;
 
 private:
+#ifdef ARTOOLKIT_FOUND
     int setupCamera(const char *cparam_name, char *vconf, ARParam *cparam);
     void debugReportMode(const ARGL_CONTEXT_SETTINGS_REF arglContextSettings);
+#endif
     int setupMarker(const char *patt_name, int *patt_id);
     void drawCube(void);
 
+#ifdef ARTOOLKIT_FOUND
     // Image acquisition.
     ARUint8* gARTImage;
 
@@ -71,23 +73,9 @@ private:
     // Drawing.
     ARParam	gARTCparam;
     ARGL_CONTEXT_SETTINGS_REF gArglSettings;
+#endif
     int gDrawRotate;
     float gDrawRotateAngle;			// For use in drawing.
 };
-#else
-
-#include <QTextEdit>
-
-class ARToolkitWidget : public QTextEdit
-{
-    Q_OBJECT
-
-public:
-    ARToolkitWidget(QWidget* parent = 0) : QTextEdit(parent)
-    {
-    }
-};
-
-#endif
 
 #endif // ARTOOLKIWWIDGET_H
