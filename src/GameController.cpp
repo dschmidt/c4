@@ -54,7 +54,7 @@ void GameController::onMoved(int column)
 {
     Player* player = qobject_cast<Player*>(sender());
 
-    qDebug() << "Player" <<  player->name() << "moved: " << column;
+    qDebug() << "Player" <<  player->name() << "moved: " << column+1;
 
     if(m_model && m_currentPlayer == player)
     {

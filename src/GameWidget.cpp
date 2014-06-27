@@ -135,7 +135,11 @@ void GameWidget::setGameModel(GameModel* model)
 
 void GameWidget::onGameFinished(Player *winner)
 {
-    qDebug() << Q_FUNC_INFO << winner->name() << "won the game";
+    if(winner != NULL){
+        qDebug() << Q_FUNC_INFO << winner->name() << "won the game";
+    }else{
+        qDebug() << Q_FUNC_INFO << "Field is full...Game is over";
+    }
 
 }
 

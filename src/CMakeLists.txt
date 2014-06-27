@@ -31,6 +31,7 @@ list(APPEND c4_SOURCES
 
     Players/HumanPlayer.cpp
     Players/AiPlayer.cpp
+    Players/AiPlayerGood.cpp
 )
 
 add_executable(c4
