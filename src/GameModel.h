@@ -20,6 +20,7 @@ public:
 
 
     Player* field[6][7];
+    void resetField();
 
 signals:
     void dataChipDropped( bool success, int column, Player* player );

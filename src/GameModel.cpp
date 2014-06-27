@@ -27,6 +27,16 @@ void GameModel::setPlayer2(Player *player2)
     m_player2 = player2;
 }
 
+void GameModel::resetField()
+{
+    int i,j;
+    for(i=0;i<6;i++){
+        for(j=0;j<7;j++){
+            field[i][j] = NULL;
+        }
+    }
+}
+
 void GameModel::dropChip(int column, Player *currentPlayer)
 {
     // ChipDrop failed if column is full
@@ -47,6 +57,17 @@ void GameModel::dropChip(int column, Player *currentPlayer)
     // check for finished game
     if(checkFinished(row, column, currentPlayer)){
         emit gameFinished(currentPlayer);
+        return;
+    }
+    bool isFull = true;
+    for(i=0;i<7;i++){
+        if(field[5][i] == NULL){
+            isFull = false;
+            break;
+        }
+    }
+    if(isFull){
+        emit gameFinished(NULL);
     }
 }
 

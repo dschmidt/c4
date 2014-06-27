@@ -1,21 +1,33 @@
-#include "AiPlayer.h"
+#include "AiPlayerGood.h"
 
 #include <QDebug>
 #include <ctime>
 
-AiPlayer::AiPlayer(const QString& name, QObject* parent)
+AiPlayerGood::AiPlayerGood(const QString& name, QObject* parent)
     : Player(name, parent)
 {
 }
 
-void AiPlayer::move(Player* field[6][7])
+void AiPlayerGood::move(Player* field[6][7])
 {
     qDebug() << Q_FUNC_INFO;
 
 
+    int i;
+    bool isEmpty = true;
+    for(i=0;i<7;i++){
+        if(field[0][i] != NULL){
+            isEmpty = false;
+        }
+    }
+    if(isEmpty){
+        emit moved(3);
+    }
+
+
 
     bool found = false;
-    int i,j;
+    int j;
     for(i=0;i<7;i++){
         targetRows[i]=-1;
     }
@@ -64,7 +76,7 @@ void AiPlayer::move(Player* field[6][7])
 
 }
 // checks if the AiPlayer can get 4 or avoid oponents 4 at field[row][column]
-bool AiPlayer::check4(int row, int column, Player* field[6][7]){
+bool AiPlayerGood::check4(int row, int column, Player* field[6][7]){
     Player* tempPlayer = this;
 
     // for the column
