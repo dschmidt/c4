@@ -19,6 +19,7 @@ public:
 
 signals:
     void arChipDropped(int column);
+    void arHighlightColumn(int column);
 
 protected:
     void keyPressEvent( QKeyEvent* event );
