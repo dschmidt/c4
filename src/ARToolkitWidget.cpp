@@ -3,6 +3,7 @@
 #include "ARToolkitWidget.h"
 
 #include "Pattern.h"
+#include "GlObject.h"
 
 #include <QDebug>
 
@@ -13,9 +14,9 @@
 #include <QApplication>
 
 
-void ARToolkitWidget::addPattern(Pattern *patt)
+void ARToolkitWidget::addPattern(Pattern* patt, GlObject* obj)
 {
-    m_patterns.append(patt);
+    m_patterns[patt] = obj;
 }
 
 ARToolkitWidget::ARToolkitWidget(QWidget *parent)
@@ -247,7 +248,7 @@ void ARToolkitWidget::drawCube(void)
 void ARToolkitWidget::drawObjects()
 {
     GLdouble m[16];
-    foreach (Pattern* patt, m_patterns)
+    foreach (Pattern* patt, m_patterns.keys())
     {
         if (patt->found) {
 
@@ -257,9 +258,9 @@ void ARToolkitWidget::drawObjects()
             glLoadMatrixd(m);
 
             // All lighting and geometry to be drawn relative to the marker goes here.
-            drawCube();
+            m_patterns[patt]->draw();
 
-        } // gPatt->found
+        } // patt->found
     }
 }
 
@@ -318,7 +319,7 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
             exit(-1);
         }
 
-        foreach (Pattern* patt, m_patterns)
+        foreach (Pattern* patt, m_patterns.keys())
         {
             // Check through the marker_info array for highest confidence
             // visible marker matching our preferred pattern.

@@ -16,6 +16,10 @@ public:
 
 public slots:
     void onDataChipDropped(bool success, int column, Player* currentPlayer);
+    void onHighlightColumn(int column);
+
+protected:
+    int m_highlightedColumn;
 };
 
 #endif // GLFIELD_H

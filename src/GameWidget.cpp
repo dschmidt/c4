@@ -16,41 +16,13 @@ GameWidget::GameWidget(QWidget* parent)
 #ifdef ARTOOLKIT_FOUND
     pattChip = loadPattern("patt.hiro");
     pattField = loadPattern("patt.kanji");
-    addPattern(pattChip);
-    addPattern(pattField);
 
     chip = new GlChip(this);
+    chip->setColor(Qt::green);
     field = new GlField(this);
-#endif
-}
+    addPattern(pattChip, chip);
+    addPattern(pattField, field);
 
-void GameWidget::drawObjects()
-{
-#ifdef ARTOOLKIT_FOUND
-    GLdouble m[16];
-    if (pattChip->found) {
-
-        // Calculate the camera position relative to the marker.
-        // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
-        arglCameraViewRH(pattChip->trans, m, VIEW_SCALEFACTOR);
-        glLoadMatrixd(m);
-
-        // All lighting and geometry to be drawn relative to the marker goes here.
-        chip->setColor(QColor(Qt::green));
-        chip->draw();
-
-    } // gPatt->found
-    if (pattField->found) {
-
-        // Calculate the camera position relative to the marker.
-        // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
-        arglCameraViewRH(pattField->trans, m, VIEW_SCALEFACTOR);
-        glLoadMatrixd(m);
-
-        // All lighting and geometry to be drawn relative to the marker goes here.
-        field->draw();
-
-    } // gPatt->found
 #endif
 }
 
@@ -73,7 +45,8 @@ void GameWidget::timerEvent(QTimerEvent* event)
         qDebug() << Q_FUNC_INFO << vect[0] << " " << vect[1] << " " << vect[2];
 
         int column = (vect[0] + 100) / 28;
-        if (vect[1] < 200 && column >= 0 && column <= 6)
+        emit arHighlightColumn(column);
+        if (vect[2] < 200 && column >= 0 && column <= 6)
         {
             if (!alreadyEmitted)
                 emit arChipDropped(column);

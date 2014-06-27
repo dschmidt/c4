@@ -159,3 +159,8 @@ void GlField::onDataChipDropped(bool success, int column, Player *currentPlayer)
 {
 
 }
+
+void GlField::onHighlightColumn(int column)
+{
+    m_highlightedColumn = column;
+}

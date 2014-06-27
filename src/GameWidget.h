@@ -13,12 +13,12 @@ class GameWidget : public ARToolkitWidget
 
 public:
     GameWidget(QWidget *parent = 0);
-    void drawObjects();
     void setGameModel(GameModel* model);
     GameModel* gameModel();
 
 signals:
     void arChipDropped(int column);
+    void arHighlightColumn(int column);
 
 protected:
     void keyPressEvent( QKeyEvent* event );
