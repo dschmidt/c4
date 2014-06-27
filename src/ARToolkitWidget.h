@@ -4,8 +4,6 @@
 
 #include "Config.h"
 
-#include <QVector>
-
 namespace Ui {
 class ARToolkitWidget;
 }
@@ -17,7 +15,7 @@ class GameModel;
 #ifdef ARTOOLKIT_FOUND
 
 #include <QGLWidget>
-#include <QVector>
+#include <QMap>
 #include <AR/config.h>
 #include <AR/video.h>
 #include <AR/param.h>			// arParamDisp()
