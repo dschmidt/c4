@@ -30,9 +30,8 @@ void GameModel::setPlayer2(Player *player2)
 
 void GameModel::resetField()
 {
-    int i,j;
-    for(i=0;i<6;i++){
-        for(j=0;j<7;j++){
+    for(int i=0;i<6;i++){
+        for(int j=0;j<7;j++){
             field[i][j] = NULL;
         }
     }
