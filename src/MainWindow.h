@@ -10,6 +10,7 @@ class MainWindow;
 class GameWidget;
 class GameModel;
 class GameController;
+class GameResult;
 
 class MainWindow : public QMainWindow
 {
@@ -18,6 +19,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private slots:
+    void onGameFinishedWithResult(GameResult* result);
 
 private:
     void setupGame();

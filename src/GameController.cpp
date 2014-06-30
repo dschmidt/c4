@@ -44,11 +44,27 @@ void GameController::startGame()
     m_model->setPlayer2(player2);
     connect(player2, SIGNAL(moved(int)), SLOT(onMoved(int)));
 
-
-    m_currentPlayer = player2;
-    m_currentPlayer->move(m_model->field);
+    restartGame();
 }
 
+void GameController::restartGame()
+{
+    qDebug() << "****** Start new game";
+
+    m_model->resetField();
+
+    int playerNumber = qrand() % 1;
+    if(playerNumber == 0)
+    {
+        m_currentPlayer = m_model->player1();
+    }
+    else
+    {
+        m_currentPlayer = m_model->player2();
+    }
+
+    m_currentPlayer->move(m_model->field);
+}
 
 void GameController::onMoved(int column)
 {
