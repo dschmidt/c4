@@ -13,7 +13,6 @@ GameWidget::GameWidget(QWidget* parent)
     : ARToolkitWidget(parent)
     , m_model(0)
 {
-#ifdef ARTOOLKIT_FOUND
     pattChip = loadPattern("patt.hiro");
     pattField = loadPattern("patt.kanji");
 
@@ -22,13 +21,12 @@ GameWidget::GameWidget(QWidget* parent)
     field = new GlField(this);
     addPattern(pattChip, chip);
     addPattern(pattField, field);
-
-#endif
 }
 
 void GameWidget::timerEvent(QTimerEvent* event)
 {
     ARToolkitWidget::timerEvent(event);
+#ifdef ARTOOLKIT_FOUND
     if (pattField->found && pattChip->found)
     {
         double vect[3];
@@ -55,6 +53,7 @@ void GameWidget::timerEvent(QTimerEvent* event)
         else
             alreadyEmitted = false;
     }
+#endif
 }
 
 void GameWidget::keyPressEvent(QKeyEvent* event)

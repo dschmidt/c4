@@ -6,11 +6,6 @@
 #include "GlObject.h"
 
 #include <QDebug>
-
-
-#ifdef ARTOOLKIT_FOUND
-
-
 #include <QApplication>
 
 
@@ -22,6 +17,7 @@ void ARToolkitWidget::addPattern(Pattern* patt, GlObject* obj)
 ARToolkitWidget::ARToolkitWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::DoubleBuffer | QGL::Rgba | QGL::DepthBuffer), parent)
 {
+#ifdef ARTOOLKIT_FOUND
     // Image acquisition.
     gARTImage = NULL;
 
@@ -29,12 +25,9 @@ ARToolkitWidget::ARToolkitWidget(QWidget *parent)
     gARTThreshhold = 100;
     gCallCountMarkerDetect = 0;
 
-    // Markers
-    gPatt = new Pattern();
-    gPatt2 = new Pattern();
-
     // Drawing.
     gArglSettings = NULL;
+#endif
     gDrawRotate = FALSE;
     gDrawRotateAngle = 0;			// For use in drawing.
 
@@ -46,16 +39,14 @@ ARToolkitWidget::~ARToolkitWidget()
 {
     releaseKeyboard();
 
+#ifdef ARTOOLKIT_FOUND
     arglCleanup(gArglSettings);
     arVideoCapStop();
     arVideoClose();
-
-    // Markers
-    delete gPatt;
-    delete gPatt2;
+#endif
 }
 
-
+#ifdef ARTOOLKIT_FOUND
 int ARToolkitWidget::setupCamera(const char *cparam_name, char *vconf, ARParam *cparam)
 {
     ARParam wparam;
@@ -89,7 +80,9 @@ int ARToolkitWidget::setupCamera(const char *cparam_name, char *vconf, ARParam *
 
     return (TRUE);
 }
+#endif
 
+#ifdef ARTOOLKIT_FOUND
 // Report state of ARToolKit global variables arFittingMode,
 // arImageProcMode, arglDrawMode, arTemplateMatchingMode, arMatchingPCAMode.
 void ARToolkitWidget::debugReportMode(const ARGL_CONTEXT_SETTINGS_REF arglContextSettings)
@@ -126,14 +119,20 @@ void ARToolkitWidget::debugReportMode(const ARGL_CONTEXT_SETTINGS_REF arglContex
         qWarning() << "MatchingPCAMode (P)   : With PCA\n";
     }
 }
+#endif
 
 int ARToolkitWidget::setupMarker(const char *patt_name, int *patt_id)
 {
+#ifdef ARTOOLKIT_FOUND
     // Loading only 1 pattern in this example.
     if ((*patt_id = arLoadPatt(patt_name)) < 0) {
         qWarning() << "setupMarker(): pattern load error !!\n";
         return (FALSE);
     }
+#else
+    static int id = 0;
+    *patt_id = id++;
+#endif
 
     return (TRUE);
 }
@@ -163,6 +162,7 @@ void ARToolkitWidget::initializeGL()
     char *vconf = "v4l2src ! ffmpegcolorspace ! capsfilter caps=video/x-raw-rgb,bpp=24,width=640,height=480 ! identity name=artoolkit ! fakesink";
 #endif
 
+#ifdef ARTOOLKIT_FOUND
     // ----------------------------------------------------------------------------
     // Hardware setup.
     //
@@ -178,10 +178,13 @@ void ARToolkitWidget::initializeGL()
         QApplication::instance()->exit(-1);
     }
     debugReportMode(gArglSettings);
+#endif
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#ifdef ARTOOLKIT_FOUND
     arUtilTimerReset();
+#endif
 }
 
 void ARToolkitWidget::resizeGL(int width, int height)
@@ -254,8 +257,14 @@ void ARToolkitWidget::drawObjects()
 
             // Calculate the camera position relative to the marker.
             // Replace VIEW_SCALEFACTOR with 1.0 to make one drawing unit equal to 1.0 ARToolKit units (usually millimeters).
+#ifdef ARTOOLKIT_FOUND
             arglCameraViewRH(patt->trans, m, VIEW_SCALEFACTOR);
             glLoadMatrixd(m);
+#else
+            glLoadIdentity();
+            glRotatef(-90.0, 1.0, 0.0, 0.0);
+            glTranslatef(0.0, 10.0, -3.0);
+#endif
 
             // All lighting and geometry to be drawn relative to the marker goes here.
             m_patterns[patt]->draw();
@@ -272,12 +281,16 @@ void ARToolkitWidget::paintGL()
     glDrawBuffer(GL_BACK);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the buffers for new frame.
 
+#ifdef ARTOOLKIT_FOUND
     arglDispImage(gARTImage, &gARTCparam, 1.0, gArglSettings);	// zoom = 1.0.
     arVideoCapNext();
     gARTImage = NULL; // Image data is no longer valid after calling arVideoCapNext().
 
     // Projection transformation.
     arglCameraFrustumRH(&gARTCparam, VIEW_DISTANCE_MIN, VIEW_DISTANCE_MAX, p);
+#else
+    p[0] = 2.2; p[1] = 0.0; p[2] = 0.0; p[3] = 0.0; p[4] = 0.0; p[5] = 3.0; p[6] = 0.0; p[7] = 0.0; p[8] = 0.0; p[9] = 0.0; p[10] = -1.0; p[11] = -1.0; p[12] = 0.0; p[13] = 0.0; p[14] = -0.2; p[15] = 0.0;
+#endif
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixd(p);
     glMatrixMode(GL_MODELVIEW);
@@ -299,6 +312,7 @@ void ARToolkitWidget::paintGL()
 
 void ARToolkitWidget::timerEvent(QTimerEvent *)
 {
+#ifdef ARTOOLKIT_FOUND
     static int ms_prev;
     int ms;
     float s_elapsed;
@@ -342,6 +356,11 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
         // Tell Qt the display has changed.
         updateGL();
     }
-}
-
+#else
+    foreach (Pattern* patt, m_patterns.keys())
+    {
+        patt->found = TRUE;
+    }
+    updateGL();
 #endif
+}
