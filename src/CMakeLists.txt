@@ -10,12 +10,6 @@ configure_file(Config.h.in ${CMAKE_CURRENT_BINARY_DIR}/Config.h)
 if(ARTOOLKIT_FOUND)
     include_directories(${ARTOOLKIT_INCLUDE_DIR})
     list(APPEND c4_LIBRARIES "${ARTOOLKIT_LIBRARIES}")
-
-    list(APPEND c4_SOURCES
-        GlChip.cpp
-        GlField.cpp
-        GlObject.cpp
-    )
 endif()
 
 
@@ -24,12 +18,15 @@ list(APPEND c4_SOURCES
     GameWidget.cpp
     GameController.cpp
     GameModel.cpp
+    GlChip.cpp
+    GlField.cpp
+    GlObject.cpp
     main.cpp
     MainWindow.cpp
     Pattern.cpp
     Player.cpp
     Settings.cpp
-
+    SettingsDialog.cpp
     Players/HumanPlayer.cpp
     Players/AiPlayer.cpp
     Players/AiPlayerGood.cpp
