@@ -1,6 +1,6 @@
 #include "GlChip.h"
 
-#include <GL/glew.h>
+#include <GL/glu.h>
 
 GlChip::GlChip(QObject *parent)
     : GlObject(parent)
