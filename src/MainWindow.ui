@@ -27,6 +27,8 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew_Game"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuOptions">
@@ -128,6 +130,11 @@
   <action name="actionPlayer">
    <property name="text">
     <string>Player</string>
+   </property>
+  </action>
+  <action name="actionNew_Game">
+   <property name="text">
+    <string>New Game</string>
    </property>
   </action>
  </widget>
