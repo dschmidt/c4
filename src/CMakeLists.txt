@@ -1,5 +1,6 @@
 
 qt4_wrap_ui(c4_UI MainWindow.ui)
+qt4_wrap_ui(c4_UI SettingsDialog.ui)
 
 include_directories(${OpenGL_INCLUDE_DIRS})
 
@@ -25,7 +26,7 @@ list(APPEND c4_SOURCES
     Pattern.cpp
     Player.cpp
     Settings.cpp
-
+    SettingsDialog.cpp
     Players/HumanPlayer.cpp
     Players/AiPlayer.cpp
     Players/AiPlayerGood.cpp
