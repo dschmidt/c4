@@ -19,7 +19,9 @@ GameWidget::GameWidget(QWidget* parent)
     chip = new GlChip(this);
     chip->setColor(Qt::green);
     field = new GlField(this);
+#ifdef ARTOOLKIT_FOUND
     addPattern(pattChip, chip);
+#endif
     addPattern(pattField, field);
 }
 
