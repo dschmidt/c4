@@ -26,6 +26,12 @@ private:
     GameWidget*  m_gameWidget;
     GameModel* m_model;
     GameController* m_controller;
+
+private slots:
+    void resolutionChange();
+    void openSettingsDialog();
+    void loadOptions();
+    void newGame();
 };
 
 #endif // MAINWINDOW_H
