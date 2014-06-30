@@ -8,6 +8,8 @@
 GlField::GlField(QWidget* parent)
     : GlObject(parent)
 {
+    GameWidget* widget = qobject_cast<GameWidget*>(parent);
+    connect(widget, SIGNAL(arHighlightColumn(int)), this, SLOT(onHighlightColumn(int)));
 }
 
 void GlField::draw()
