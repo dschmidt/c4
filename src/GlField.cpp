@@ -43,7 +43,8 @@ void GlField::draw()
        }
    }
 
-    const GLfloat field_vertices [32][3] = {
+    const GLfloat field_vertices [32][3] =
+    {
         //rear upper vertices
         {7.0, 0.50, 11.0}, {5.0, 0.50, 11.0}, {3.0, 0.50, 11.0}, {1.0, 0.50, 11.0},
         {-1.0, 0.50, 11.0}, {-3.0, 0.50, 11.0}, {-5.0, 0.50, 11.0}, {-7.0, 0.50, 11.0},
@@ -58,11 +59,17 @@ void GlField::draw()
 
         //front lower vertices
         {-7.0, -0.50, -1.0}, {-5.0, -0.50, -1.0}, {-3.0, -0.50, -1.0}, {-1.0, -0.50, -1.0},
-        {1.0, -0.50, -1.0}, {3.0, -0.50, -1.0}, {5.0, -0.50, -1.0}, {7.0, -0.50, -1.0} };
+        {1.0, -0.50, -1.0}, {3.0, -0.50, -1.0}, {5.0, -0.50, -1.0}, {7.0, -0.50, -1.0}
+    };
+
+    const short field_line_faces [2][4] =
+    {
+        {0, 7, 23, 16}, {15, 8, 24, 31}
+    };
 
     GLint field_num_faces = 29;
-    const short field_faces [29][4] = {
-
+    const short field_faces [29][4] =
+    {
         //1. column
         {9, 8, 24, 25}, {6, 7, 23, 22},
         //2. column
@@ -96,16 +103,17 @@ void GlField::draw()
         {20, 21, 26, 27},
         {21, 22, 25, 26},
         {22, 23, 24, 25},
-
     };
 
-    if (!polyList) {
+    if (!polyList)
+    {
         polyList = glGenLists (1);
         glNewList(polyList, GL_COMPILE);
 
         glBegin (GL_QUADS);
         for (f = 14; f < field_num_faces; f++)
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++)
+            {
                 glColor4f(0.137255, 0.137255, 0.556863, 0.650);
                 glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
             }
@@ -113,7 +121,8 @@ void GlField::draw()
 
         glBegin (GL_QUADS);
         for (f = 0; f < 14 ; f=f+2)
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++)
+            {
                 glColor4f(0.137255, 0.137255, 0.556863, 0.350);
                 glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
             }
@@ -121,20 +130,35 @@ void GlField::draw()
 
         glBegin (GL_QUADS);
         for (f = 1; f < 14 ; f=f+2)
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i++)
+            {
                 glColor4f(0.137255, 0.137255, 0.556863, 0.250);
                 glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
 
             }
         glEnd();
 
-        glBegin (GL_LINE_LOOP);
-        for (f = 0; f < field_num_faces; f++) {
-            glColor3f (0.0, 0.0, 0.0);
+        glColor3f (0.0, 0.0, 0.0);
+        for (f = 0; f < 2 ; f++)
+        {
+            glBegin (GL_LINE_LOOP);
             for (i = 0; i < 4; i++)
-                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+            {
+                glVertex3f(field_vertices[field_line_faces[f][i]][0] * fSize, field_vertices[field_line_faces[f][i]][1] * fSize, field_vertices[field_line_faces[f][i]][2] * fSize);
+            }
+            glEnd();
         }
-        glEnd ();
+
+        for (f = 14; f < 22 ; f++)
+        {
+            glBegin (GL_LINE_LOOP);
+            for (i = 0; i < 4; i++)
+            {
+                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+
+            }
+            glEnd();
+        }
 
         glEndList ();
     }
