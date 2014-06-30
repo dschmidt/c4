@@ -13,13 +13,15 @@ GameWidget::GameWidget(QWidget* parent)
     : ARToolkitWidget(parent)
     , m_model(0)
 {
-    pattChip = loadPattern("patt.hiro");
+    pattChip = loadPattern("patt.hiro", 40.0);
     pattField = loadPattern("patt.kanji");
 
     chip = new GlChip(this);
     chip->setColor(Qt::green);
     field = new GlField(this);
+#ifdef ARTOOLKIT_FOUND
     addPattern(pattChip, chip);
+#endif
     addPattern(pattField, field);
 }
 
