@@ -19,6 +19,7 @@ GameWidget::GameWidget(QWidget* parent)
     chip = new GlChip(this);
     chip->setColor(Qt::green);
     field = new GlField(this);
+    connect(this, SIGNAL(arHighlightColumn(int)), field, SLOT(onHighlightColumn(int)));
 #ifdef ARTOOLKIT_FOUND
     addPattern(pattChip, chip);
 #endif
