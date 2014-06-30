@@ -137,9 +137,9 @@ int ARToolkitWidget::setupMarker(const char *patt_name, int *patt_id)
     return (TRUE);
 }
 
-Pattern* ARToolkitWidget::loadPattern(const char *patt_name)
+Pattern* ARToolkitWidget::loadPattern(const char *patt_name, double pattWidth)
 {
-    Pattern* patt = new Pattern();
+    Pattern* patt = new Pattern(pattWidth);
     if (!setupMarker(patt_name, &patt->id)) {
         qWarning() << "main(): Unable to set up AR marker.\n";
         QApplication::instance()->exit(-1);

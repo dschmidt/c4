@@ -42,7 +42,7 @@ protected:
 
     void timerEvent(QTimerEvent*);
 
-    Pattern* loadPattern(const char *patt_name);
+    Pattern* loadPattern(const char *patt_name, double pattWidth = 80.0);
 
     // ============================================================================
     //	Constants

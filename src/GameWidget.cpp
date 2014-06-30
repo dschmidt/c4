@@ -13,7 +13,7 @@ GameWidget::GameWidget(QWidget* parent)
     : ARToolkitWidget(parent)
     , m_model(0)
 {
-    pattChip = loadPattern("patt.hiro");
+    pattChip = loadPattern("patt.hiro", 40.0);
     pattField = loadPattern("patt.kanji");
 
     chip = new GlChip(this);
