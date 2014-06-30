@@ -5,15 +5,7 @@ GameModel::GameModel(QObject *parent)
     , m_player1(0)
     , m_player2(0)
 {
-    int x,y;
-
-    for (y = 0; y < 6; y++)
-    {
-        for (x = 0; x < 7; x++)
-        {
-            field[y][x] = NULL;
-        }
-    }
+    resetField();
 }
 
 Player* GameModel::player1() const
