@@ -16,6 +16,7 @@ public:
     void setGameModel(GameModel* model);
     void setGameWidget(ARToolkitWidget* model);
     void startGame();
+    void restartGame();
 
 private slots:
     void onMoved(int column);

@@ -6,6 +6,7 @@
 #include "GameController.h"
 #include "SettingsDialog.h"
 #include "Settings.h"
+#include "GameResult.h"
 
 #include <QDebug>
 
@@ -44,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_ui->action1920x1080, SIGNAL(triggered()), this, SLOT(resolutionChange()));
     connect(m_ui->actionPlayer, SIGNAL(triggered()), this, SLOT(openSettingsDialog()));
     connect(m_ui->actionNew_Game, SIGNAL(triggered()), this, SLOT(newGame()));
-    
+
     setupGame();
 }
 
@@ -60,6 +61,8 @@ void MainWindow::setupGame()
     loadOptions();
     m_gameWidget = new GameWidget(this);
     m_model = new GameModel(this);
+    connect(m_model, SIGNAL(gameFinishedWithResult(GameResult*)), SLOT(onGameFinishedWithResult(GameResult*)));
+
     m_controller = new GameController(this);
 
     m_controller->setGameModel(m_model);
@@ -119,8 +122,26 @@ void MainWindow::loadOptions()
 
 void MainWindow::newGame()
 {
-    m_model->resetField();
-    m_controller->startGame();
+    m_controller->restartGame();
 }
 
+void MainWindow::onGameFinishedWithResult(GameResult *result)
+{
+    QString resultString("%1 wins");
+    if(result->winner)
+    {
+        resultString = resultString.arg(result->winner->name());
+    }
+    else
+    {
+        resultString = resultString.arg("Noone");
+    }
 
+    m_ui->resultWidget->addItem(new QListWidgetItem(resultString, m_ui->resultWidget));
+
+
+    m_ui->player1Label->setText(QString("%1: %2").arg(result->player1->name()).arg(m_model->wins(result->player1)));
+    m_ui->player2Label->setText(QString("%1: %2").arg(result->player2->name()).arg(m_model->wins(result->player2)));
+
+    m_controller->restartGame();
+}

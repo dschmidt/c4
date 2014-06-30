@@ -1,11 +1,22 @@
 #include "GameModel.h"
+#include "GameResult.h"
+
+#include <QDebug>
 
 GameModel::GameModel(QObject *parent)
     : QObject(parent)
     , m_player1(0)
     , m_player2(0)
+    , m_gameFinished(false)
 {
     resetField();
+
+    connect(this, SIGNAL(gameFinished(Player*)), SLOT(onGameFinished(Player*)));
+}
+
+GameModel::~GameModel()
+{
+    qDeleteAll(m_results);
 }
 
 Player* GameModel::player1() const
@@ -30,6 +41,8 @@ void GameModel::setPlayer2(Player *player2)
 
 void GameModel::resetField()
 {
+    m_gameFinished = false;
+
     for(int i=0;i<6;i++){
         for(int j=0;j<7;j++){
             field[i][j] = NULL;
@@ -39,6 +52,11 @@ void GameModel::resetField()
 
 void GameModel::dropChip(int column, Player *currentPlayer)
 {
+    if(m_gameFinished) {
+         emit dataChipDropped(false, column, currentPlayer);
+        return;
+    }
+
     // ChipDrop failed if column is full
     if(field[5][column] != NULL){
         emit dataChipDropped(false, column, currentPlayer);
@@ -151,4 +169,32 @@ bool GameModel::checkFinished(int row, int column, Player *currentPlayer){
 
 
     return false;
+}
+
+
+void GameModel::onGameFinished(Player* winner)
+{
+    m_gameFinished = true;
+
+    GameResult* result = new GameResult;
+    result->player1 = m_player1;
+    result->player2 = m_player2;
+    result->winner = winner;
+    m_results.append(result);
+
+    emit gameFinishedWithResult(result);
+}
+
+int GameModel::wins(Player* player) const
+{
+    int wins = 0;
+    foreach(GameResult* currentResult, m_results)
+    {
+        if(currentResult->winner == player)
+        {
+            wins++;
+        }
+    }
+
+    return wins;
 }
