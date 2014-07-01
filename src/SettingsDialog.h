@@ -22,8 +22,6 @@ private:
 private slots:
     void cancel();
     void save();
-    void openColorDialog();
-    void setNewColor(QColor color);
 };
 
 #endif // SETTINGSDIALOG_H

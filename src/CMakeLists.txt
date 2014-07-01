@@ -15,6 +15,7 @@ endif()
 
 list(APPEND c4_SOURCES
     ARToolkitWidget.cpp
+    ColorButton.cpp
     GameWidget.cpp
     GameController.cpp
     GameModel.cpp
