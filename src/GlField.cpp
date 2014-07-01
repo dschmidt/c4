@@ -62,9 +62,9 @@ void GlField::draw()
         {1.0, -0.50, -1.0}, {3.0, -0.50, -1.0}, {5.0, -0.50, -1.0}, {7.0, -0.50, -1.0}
     };
 
-    const short field_line_faces [2][4] =
+    const short field_line_faces [3][4] =
     {
-        {0, 7, 23, 16}, {15, 8, 24, 31}
+        {0, 7, 23, 16}, {15, 8, 24, 31}, {15, 0, 7, 8}
     };
 
     GLint field_num_faces = 29;
@@ -110,6 +110,30 @@ void GlField::draw()
         polyList = glGenLists (1);
         glNewList(polyList, GL_COMPILE);
 
+
+        for (f = 14; f < 22 ; f++)
+        {
+            glColor3f (0.0, 0.0, 0.0);
+            glBegin (GL_LINE_LOOP);
+            for (i = 0; i < 4; i++)
+            {
+                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+
+            }
+            glEnd();
+        }
+
+        for (f = 0; f < 2 ; f++)
+        {
+            glColor3f (0.0, 0.0, 0.0);
+            glBegin (GL_LINE_LOOP);
+            for (i = 0; i < 4; i++)
+            {
+                glVertex3f(field_vertices[field_line_faces[f][i]][0] * fSize, field_vertices[field_line_faces[f][i]][1] * fSize, field_vertices[field_line_faces[f][i]][2] * fSize);
+            }
+            glEnd();
+        }
+
         glBegin (GL_QUADS);
         for (f = 14; f < field_num_faces; f++)
             for (i = 0; i < 4; i++)
@@ -119,11 +143,12 @@ void GlField::draw()
             }
         glEnd();
 
+
         glBegin (GL_QUADS);
         for (f = 0; f < 14 ; f=f+2)
             for (i = 0; i < 4; i++)
             {
-                glColor4f(0.137255, 0.137255, 0.556863, 0.350);
+                glColor4f(0.137255, 0.137255, 0.556863, 0.200);
                 glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
             }
         glEnd();
@@ -132,40 +157,25 @@ void GlField::draw()
         for (f = 1; f < 14 ; f=f+2)
             for (i = 0; i < 4; i++)
             {
-                glColor4f(0.137255, 0.137255, 0.556863, 0.250);
+                glColor4f(0.137255, 0.137255, 0.556863, 0.150);
                 glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
-
+                glColor3f (0.0, 0.0, 0.0);
             }
         glEnd();
 
         glColor3f (0.0, 0.0, 0.0);
-        for (f = 0; f < 2 ; f++)
+        glBegin (GL_LINE_LOOP);
+        for (i = 0; i < 4; i++)
         {
-            glBegin (GL_LINE_LOOP);
-            for (i = 0; i < 4; i++)
-            {
-                glVertex3f(field_vertices[field_line_faces[f][i]][0] * fSize, field_vertices[field_line_faces[f][i]][1] * fSize, field_vertices[field_line_faces[f][i]][2] * fSize);
-            }
-            glEnd();
+            glVertex3f(field_vertices[field_line_faces[2][i]][0] * fSize, field_vertices[field_line_faces[2][i]][1] * fSize, field_vertices[field_line_faces[2][i]][2] * fSize);
         }
-
-        for (f = 14; f < 22 ; f++)
-        {
-            glBegin (GL_LINE_LOOP);
-            for (i = 0; i < 4; i++)
-            {
-                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
-
-            }
-            glEnd();
-        }
+        glEnd();
 
         glEndList ();
     }
 
     glPushMatrix(); // Save world coordinate system.
     glTranslatef(0.0, 0.0, 0.5); // Place base of field on marker surface.
-//    glRotatef(gDrawRotateAngle, 0.0, 0.0, 1.0); // Rotate about z axis.
     glDisable(GL_LIGHTING);	// Just use colours.
     glCallList(polyList);	// Draw the field.
     glPopMatrix();	// Restore world coordinate system.

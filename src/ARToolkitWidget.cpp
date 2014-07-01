@@ -159,7 +159,7 @@ void ARToolkitWidget::initializeGL()
 #ifdef _WIN32
     char *vconf = "Data\\WDM_camera_flipV.xml";
 #else
-    char *vconf = "v4l2src ! ffmpegcolorspace ! capsfilter caps=video/x-raw-rgb,bpp=24,width=640,height=480 ! identity name=artoolkit ! fakesink";
+    char *vconf = "v4l2src ! ffmpegcolorspace ! videobalance brightness=0 contrast=1.4 ! capsfilter caps=video/x-raw-rgb,bpp=24,width=640,height=480 ! identity name=artoolkit ! fakesink";
 #endif
 
 #ifdef ARTOOLKIT_FOUND
