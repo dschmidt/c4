@@ -2,6 +2,7 @@
 
 #include "Players/HumanPlayer.h"
 #include "Players/AiPlayer.h"
+#include "Players/AiPlayerGood.h"
 #include "GameModel.h"
 
 #include <QDebug>
@@ -39,7 +40,7 @@ void GameController::startGame()
     m_model->setPlayer1(player1);
     connect(player1, SIGNAL(moved(int)), SLOT(onMoved(int)));
 
-    Player* player2 = new AiPlayer(QLatin1String("Ai"), this);
+    Player* player2 = new AiPlayerGood(QLatin1String("Ai"), this);
     player2->setColor(QColor(Qt::yellow));
     m_model->setPlayer2(player2);
     connect(player2, SIGNAL(moved(int)), SLOT(onMoved(int)));
