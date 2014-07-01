@@ -9,6 +9,7 @@ public:
     AiPlayerGood(const QString& name, QObject* parent = 0);
 
     void move(Player *field[6][7]);
+    bool check4Lost(int row, int column, Player *field[6][7]);
 
 
 private:
