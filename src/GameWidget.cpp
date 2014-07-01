@@ -44,7 +44,7 @@ void GameWidget::timerEvent(QTimerEvent* event)
         // print transformed vector to debug output
         qDebug() << Q_FUNC_INFO << vect[0] << " " << vect[1] << " " << vect[2];
 
-        int column = (vect[0] + 100) / 28;
+        int column = (vect[0] + 120) / 35;
         emit arHighlightColumn(column);
         if (vect[2] < 230 && column >= 0 && column <= 6)
         {
