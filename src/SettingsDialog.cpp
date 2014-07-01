@@ -19,9 +19,12 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     s_ui->settingsAiColorButton->setColor(s->aiColor());
 
     s_ui->settingsAiBox->clear();
-    QString aiNames = "Bob|Weak|Normal|Strong|Chuck Norris";
     QStringList aiList;
-    aiList = aiNames.split("|");
+    aiList << "Bob"
+           << "Weak"
+           << "Normal"
+           << "Strong"
+           << "Chuck Norris";
     s_ui->settingsAiBox->addItems(aiList);
 
     connect(s_ui->buttonBox, SIGNAL(rejected()),this, SLOT(cancel()));
