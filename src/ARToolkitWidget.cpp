@@ -158,9 +158,9 @@ void ARToolkitWidget::initializeGL()
     // Camera configuration.
     //
 #ifdef _WIN32
-    char *vconf = "Data\\WDM_camera_flipV.xml";
+    QString vConf = "Data\\WDM_camera_flipV.xml";
 #else
-    char *vconf = "v4l2src ! ffmpegcolorspace ! videobalance brightness=0 contrast=1.4 ! capsfilter caps=video/x-raw-rgb,bpp=24,width=640,height=480 ! identity name=artoolkit ! fakesink";
+    QString vConf = QString("v4l2src ! ffmpegcolorspace ! videobalance brightness=0 contrast=1.4 ! capsfilter caps=video/x-raw-rgb,bpp=24,width=%1,height=%2 ! identity name=artoolkit ! fakesink").arg(Settings::instance()->cameraWidth()).arg(Settings::instance()->cameraHeight());
 #endif
 
 #ifdef ARTOOLKIT_FOUND
@@ -168,7 +168,7 @@ void ARToolkitWidget::initializeGL()
     // Hardware setup.
     //
 
-    if (!setupCamera(cparam_name, vconf, &gARTCparam)) {
+    if (!setupCamera(cparam_name, vConf.toUtf8().data(), &gARTCparam)) {
         qWarning() << "main(): Unable to set up AR camera.\n";
         QApplication::instance()->exit(-1);
     }
