@@ -22,12 +22,13 @@ public:
     Player* player2() const;
     void setPlayer2(Player* player2);
 
-
     Player* field[6][7];
     void resetField();
 
-
     int wins(Player* player) const;
+
+    QString getGame();
+    void setGame(QString saveGame);
 
 signals:
     void dataChipDropped( bool success, int column, Player* player );
