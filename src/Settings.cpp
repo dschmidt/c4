@@ -44,12 +44,22 @@ const QColor Settings::playerColor() const
 
 void Settings::setAiName(const QString& name)
 {
-    setValue( "playerName", name );
+    setValue( "aiName", name );
 }
 
 const QString Settings::aiName() const
 {
-    return value( "playerName", "Hans Wurst" ).value< QString >();
+    return value( "aiName", "Bob" ).value< QString >();
+}
+
+void Settings::setAiNameList(const QString& name)
+{
+    setValue( "aiNameList", "Bob|Weak|Normal|Strong|Chuck Norris" );
+}
+
+const QString Settings::aiNameList() const
+{
+    return value( "aiNameList", "Bob|Weak|Normal|Strong|Chuck Norris" ).value< QString >();
 }
 
 void Settings::setAiColor(const QColor& color)
@@ -72,7 +82,6 @@ int Settings::aiLevel() const
     return value( "aiLevel", 1).value< int >();
 }
 
-
 void Settings::setCameraWidth(int cameraWidth)
 {
     setValue( "cameraWidth", cameraWidth );
@@ -91,5 +100,14 @@ void Settings::setCameraHeight(int cameraHeight)
 int Settings::cameraHeight() const
 {
     return value( "cameraHeight", 480).value< int >();
+}
+void Settings::setSaveGame(const QString& save)
+{
+    setValue( "saveGame", save );
+}
+
+const QString Settings::saveGame() const
+{
+    return value( "saveGame", "NoGame" ).value< QString >();
 }
 

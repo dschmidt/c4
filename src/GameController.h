@@ -15,8 +15,10 @@ public:
     explicit GameController(QObject* parent = 0);
     void setGameModel(GameModel* model);
     void setGameWidget(ARToolkitWidget* model);
-    void startGame();
     void restartGame();
+    void startGame();
+    void loadGame(QString save, QString players, int aiLevel);
+    QString saveGame();
 
 private slots:
     void onMoved(int column);

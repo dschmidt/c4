@@ -4,6 +4,7 @@
 #include "Players/AiPlayer.h"
 #include "Players/AiPlayerGood.h"
 #include "GameModel.h"
+#include "Settings.h"
 
 #include <QDebug>
 
@@ -33,14 +34,16 @@ void GameController::setGameWidget( ARToolkitWidget* widget )
 
 void GameController::startGame()
 {
-    HumanPlayer* player1 = new HumanPlayer(QLatin1String("Human"), this);
-    player1->setColor(QColor(Qt::red));
+    HumanPlayer* player1 = new HumanPlayer(Settings::instance()->playerName(), this);
+    player1->setColor(Settings::instance()->playerColor());
     player1->setGameWidget(m_widget);
 
     m_model->setPlayer1(player1);
     connect(player1, SIGNAL(moved(int)), SLOT(onMoved(int)));
 
-    Player* player2 = new AiPlayerGood(QLatin1String("Ai"), this);
+    Player* player2 = new AiPlayer(Settings::instance()->aiName(), this);
+    player2->setColor(Settings::instance()->aiColor());
+    //Player* player2 = new AiPlayerGood(QLatin1String("Ai"), this);
     player2->setColor(QColor(Qt::yellow));
     m_model->setPlayer2(player2);
     connect(player2, SIGNAL(moved(int)), SLOT(onMoved(int)));
@@ -103,4 +106,25 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
     {
         qDebug() << Q_FUNC_INFO << "Move failed, let player repeat input";
     }
+}
+
+QString GameController::saveGame(){
+        QString save(m_model->player1()->name()+"|"+m_model->player2()->name() + "|"+ Settings::instance()->aiLevel() +"|");
+        return save + m_model->getGame();
+}
+
+void GameController::loadGame(QString save,QString players, int aiLevel){
+    //loads player names and ai configuration out of a string into the gamemodel
+    if (save.length() < 42)
+    {
+        return;
+    }
+    size_t mid;
+    mid = players.toStdString().find_first_of("|",0);
+    Settings::instance()->setAiLevel(aiLevel);
+    Settings::instance()->setPlayerName(players.left(static_cast<int>(mid)));
+    Settings::instance()->setAiName(players.remove(0,static_cast<unsigned int>(mid)+1));
+    startGame();
+    //string with chip-position given to the gamemodel
+    m_model->setGame(save);
 }

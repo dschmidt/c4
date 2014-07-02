@@ -22,6 +22,9 @@ public:
     void setAiName(const QString& name);
     const QString aiName() const;
 
+    void setAiNameList(const QString& name);
+    const QString aiNameList() const;
+
     void setAiColor(const QColor& color);
     const QColor aiColor() const;
 
@@ -34,6 +37,8 @@ public:
     void setCameraHeight(int cameraHeight);
     int cameraHeight() const;
 
+    void setSaveGame(const QString& save);
+    const QString saveGame() const;
 
 private:
     static Settings* s_instance;

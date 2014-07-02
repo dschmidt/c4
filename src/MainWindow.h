@@ -36,6 +36,10 @@ private slots:
     void openSettingsDialog();
     void loadOptions();
     void newGame();
+    void quickSave();
+    void quickLoad();
+    void showRules();
+    void showImpressum();
 };
 
 #endif // MAINWINDOW_H
