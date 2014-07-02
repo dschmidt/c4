@@ -32,12 +32,12 @@ ARToolkitWidget::ARToolkitWidget(QWidget *parent)
     gDrawRotateAngle = 0;			// For use in drawing.
 
 
-    grabKeyboard();
+    setFocus();
 }
 
 ARToolkitWidget::~ARToolkitWidget()
 {
-    releaseKeyboard();
+    clearFocus();
 
 #ifdef ARTOOLKIT_FOUND
     arglCleanup(gArglSettings);
