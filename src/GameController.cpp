@@ -5,6 +5,7 @@
 #include "Players/AiPlayerGood.h"
 #include "GameModel.h"
 #include "Settings.h"
+#include "GameWidget.h"
 
 #include <QDebug>
 
@@ -27,9 +28,15 @@ void GameController::setGameModel( GameModel* model )
     connect(Settings::instance(), SIGNAL(settingsChanged()),this , SLOT(colorNameChanged()));
 }
 
-void GameController::setGameWidget( ARToolkitWidget* widget )
+void GameController::setGameWidget(GameWidget* widget )
 {
+    if(m_widget)
+    {
+        disconnect(m_widget);
+    }
+
     m_widget = widget;
+    connect(this, SIGNAL(currentPlayerChange(Player*)), m_widget, SLOT(onCurrentPlayerChanged(Player*)));
 }
 
 void GameController::colorNameChanged()
@@ -89,6 +96,9 @@ void GameController::restartGame()
     {
         m_currentPlayer = m_model->player2();
     }
+
+    // change current player
+    emit currentPlayerChange(m_currentPlayer);
     m_currentPlayer->move(m_model->field);
 }
 

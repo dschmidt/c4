@@ -3,7 +3,7 @@
 
 #include "../Player.h"
 
-class ARToolkitWidget;
+class GameWidget;
 
 class HumanPlayer : public Player
 {
@@ -12,13 +12,13 @@ public:
 
     void move(Player *field[6][7]);
 
-    void setGameWidget(ARToolkitWidget* gameWidget);
+    void setGameWidget(GameWidget* gameWidget);
 
 //private slots:
 //    void onArChipDropped(int column);
 
 private:
-    ARToolkitWidget* m_gameWidget;
+    GameWidget* m_gameWidget;
 };
 
 #endif // HUMANPLAYER_H

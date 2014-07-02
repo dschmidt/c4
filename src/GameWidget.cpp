@@ -122,3 +122,11 @@ GameModel* GameWidget::gameModel()
 {
     return m_model;
 }
+
+
+void GameWidget::onCurrentPlayerChanged(Player* currentPlayer)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    chip->setColor(currentPlayer->color());
+}
