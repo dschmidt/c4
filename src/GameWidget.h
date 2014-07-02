@@ -16,6 +16,9 @@ public:
     void setGameModel(GameModel* model);
     GameModel* gameModel();
 
+public slots:
+    void onCurrentPlayerChanged(Player* currentPlayer);
+
 signals:
     void arChipDropped(int column);
     void arHighlightColumn(int column);

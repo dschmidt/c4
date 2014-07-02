@@ -5,7 +5,7 @@
 
 class Player;
 class GameModel;
-class ARToolkitWidget;
+class GameWidget;
 
 class GameController : public QObject
 {
@@ -14,11 +14,15 @@ class GameController : public QObject
 public:
     explicit GameController(QObject* parent = 0);
     void setGameModel(GameModel* model);
-    void setGameWidget(ARToolkitWidget* model);
+    void setGameWidget(GameWidget* widget);
+
     void restartGame();
     void startGame();
     void loadGameState();
     QString getGameState();
+
+signals:
+    void currentPlayerChange(Player* player);
 
 private slots:
     void colorNameChanged();
@@ -28,7 +32,7 @@ private slots:
 private:
     Player* m_currentPlayer;
     GameModel* m_model;
-    ARToolkitWidget* m_widget;
+    GameWidget* m_widget;
 };
 
 #endif // GAMECONTROLLER_H

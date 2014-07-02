@@ -1,6 +1,6 @@
 #include "HumanPlayer.h"
 
-#include "../ARToolkitWidget.h"
+#include "../GameWidget.h"
 
 #include <QDebug>
 #include <QString>
@@ -38,7 +38,7 @@ void HumanPlayer::move(Player* field[6][7])
     qDebug() << Q_FUNC_INFO;
 }
 
-void HumanPlayer::setGameWidget(ARToolkitWidget *gameWidget)
+void HumanPlayer::setGameWidget(GameWidget *gameWidget)
 {
     if (m_gameWidget)
     {
