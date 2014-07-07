@@ -195,7 +195,7 @@ bool AiPlayer::check4(int row, int column, Player* field[6][7]){
     for(;i>=0 && j<7;i--,j++){
         if(field[i][j]!= NULL){
             if(counter == 0){
-                tempPlayer = field[row][i];
+                tempPlayer = field[i][j];
                 counter = 1;
             }else if(field[i][j] == tempPlayer){
                 counter++;

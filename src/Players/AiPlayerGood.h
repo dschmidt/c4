@@ -10,6 +10,7 @@ public:
 
     void move(Player *field[6][7]);
     bool check4Lost(int row, int column, Player *field[6][7]);
+    bool checkBad2(int row, int column, Player *field[6][7]);
 
 
 private:
