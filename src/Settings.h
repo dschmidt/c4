@@ -12,7 +12,6 @@ public:
     explicit Settings(QObject *parent = 0);
     virtual ~Settings();
 
-
     void setPlayerName(const QString& name);
     const QString playerName() const;
 
@@ -37,8 +36,11 @@ public:
     void setCameraHeight(int cameraHeight);
     int cameraHeight() const;
 
-    void setSaveGame(const QString& save);
-    const QString saveGame() const;
+    void setQuickSave(const QString& save);
+    const QString quickSave() const;
+
+signals:
+    void settingsChanged();
 
 private:
     static Settings* s_instance;
