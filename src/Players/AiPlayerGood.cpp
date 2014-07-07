@@ -83,6 +83,16 @@ void AiPlayerGood::move(Player* field[6][7])
         }
     }
 
+    for(i=0;i<7;i++){
+        if(targetRows[i] >= 0){
+            found = checkBad2(targetRows[i],i,field);
+        }
+        if(found){
+            emit moved(i);
+            return;
+        }
+    }
+
     //default: random drop
     int random;
     srand(time(0));
@@ -240,5 +250,181 @@ bool AiPlayerGood::check4Lost(int row, int column, Player *field[6][7])
             counter = 0;
         }
     }
+    return false;
+}
+
+bool AiPlayerGood::checkBad2(int row, int column, Player *field[6][7])
+{
+    Player* tempPlayer = this;
+
+    // for the row
+    int i;
+    int counter = 0;
+    for(i=0;i<7;i++){
+        if(field[row][i]!=NULL){
+            if(counter == 0){
+
+            }else if(counter == 1){
+                tempPlayer = field[row][i];
+                counter++;
+            }else if(tempPlayer == field[row][i]){
+                counter++;
+            }else{
+                counter = 0;
+            }
+        }else if(i==column){
+            if(counter >= 3 && column <6){
+                if(field[row][column+1] == NULL){
+                    if(row == 0){
+                        return true;
+                    }else if(field[row-1][column+1] != NULL){
+                        return true;
+                    }
+                }
+            }
+            if(counter == 2 && column<5){
+                if(field[row][column+1] != NULL && field[row][column+2] == NULL){
+                    if(tempPlayer==field[row][column+1]){
+                        if(row == 0){
+                            return true;
+                        }else if(field[row-1][column+2] != NULL){
+                            return true;
+                        }
+                    }
+                }
+            }
+            if(counter == 1 && column<4){
+                if(field[row][column+1] != NULL && field[row][column+2] != NULL && field[row][column+3] == NULL){
+                    tempPlayer = field[row][column+1];
+                    if(tempPlayer==field[row][column+2]){
+                        if(row == 0){
+                            return true;
+                        }else if(field[row-1][column+3] != NULL){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }else{
+            counter = 1;
+        }
+    }
+
+    //for the /-diagonal
+    // i :: row ; j :: column
+    counter = 0;
+    int yAchsenSchnitt = row-column;
+    int j;
+    if(yAchsenSchnitt >=0){
+        i = yAchsenSchnitt;
+        j = 0;
+    }else{
+        i = 0;
+        j = -yAchsenSchnitt;
+    }
+    for(;i<6 && j<7;i++,j++){
+        if(field[i][j]!= NULL){
+            if(counter == 0){
+
+            }else if(counter == 1){
+                tempPlayer = field[i][j];
+                counter++;
+            }else if(field[i][j] == tempPlayer){
+                counter++;
+            }else{
+                counter = 0;
+            }
+        }else if(i==row && j==column){
+            if(counter >= 3 && column<6 && row<5){
+                if(field[row+1][column+1] == NULL){
+                    if(field[row][column+1] != NULL){
+                        return true;
+                    }
+                }
+            }
+            if(counter == 2 && column<5 && row<4){
+                if(field[row+1][column+1] != NULL && field[row+2][column+2] == NULL){
+                    if(tempPlayer==field[row+1][column+1]){
+                        if(field[row+1][column+2] != NULL){
+                            return true;
+                        }
+                    }
+                }
+            }
+            if(counter == 1 && column<4 && row<3){
+                if(field[row+1][column+1] != NULL && field[row+2][column+2] != NULL && field[row+3][column+3] == NULL){
+                    tempPlayer=field[row+1][column+1];
+                    if(tempPlayer==field[row+2][column+2]){
+                        if(field[row+2][column+3] != NULL){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }else{
+            counter = 1;
+        }
+    }
+    //for the \-diagonal
+    counter = 0;
+    yAchsenSchnitt = row+column;
+    if(yAchsenSchnitt < 6){
+        i = yAchsenSchnitt;
+        j = 0;
+    }else{
+        i = 5;
+        j = yAchsenSchnitt-5;
+    }
+    for(;i>=0 && j<7;i--,j++){
+        if(field[i][j]!= NULL){
+            if(counter == 0){
+
+            }else if(counter == 1){
+                tempPlayer = field[i][j];
+                counter++;
+            }else if(field[i][j] == tempPlayer){
+                counter++;
+            }else{
+                counter = 0;
+            }
+        }else if(i==row && j==column){
+            if(counter >= 3 && column<6 && row>0){
+                if(field[row-1][column+1] == NULL){
+                    if(row-1 == 0){
+                        return true;
+                    }else if(field[row-2][column+1] != NULL){
+                        return true;
+                    }
+                }
+            }
+            if(counter == 2 && column<5 && row>1){
+                if(field[row-1][column+1] != NULL && field[row-2][column+2] == NULL){
+                    if(tempPlayer==field[row-1][column+1]){
+                        if(row-2 == 0){
+                            return true;
+                        }else if(field[row-3][column+2] != NULL){
+                            return true;
+                        }
+                    }
+                }
+            }
+            if(counter == 1 && column<4 && row>2){
+                if(field[row-1][column+1] != NULL && field[row-2][column+2] != NULL && field[row-3][column+3] == NULL){
+                    tempPlayer==field[row-1][column+1];
+                    if(tempPlayer==field[row-2][column+2]){
+                        if(row-3 == 0){
+                            return true;
+                        }else if(field[row-4][column+3] != NULL){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }else{
+            counter = 1;
+        }
+    }
+
+
     return false;
 }
