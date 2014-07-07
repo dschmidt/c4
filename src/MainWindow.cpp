@@ -24,14 +24,14 @@ MainWindow::MainWindow(QWidget *parent)
     // acces them later on via instance()
     Settings* s = Settings::instance();
 
-    /*qDebug() << "***** Current settings *****";
+    qDebug() << "***** Current settings *****";
     qDebug() << "Player name" << s->playerName();
     qDebug() << "Player color" << s->playerColor();
     qDebug();
     qDebug() << "AI name" << s->aiName();
     qDebug() << "AI color" << s->aiColor();
     qDebug() << "AI level" << s->aiLevel();
-    qDebug();*/
+    qDebug();
 
     m_ui->setupUi(this);
     m_ui->statusbar->setVisible(false);
@@ -125,7 +125,7 @@ void MainWindow::loadOptions()
 
 void MainWindow::newGame()
 {
-    m_controller->restartGame();
+    m_controller->startGame();
 }
 
 void MainWindow::onGameFinishedWithResult(GameResult *result)
@@ -151,18 +151,16 @@ void MainWindow::onGameFinishedWithResult(GameResult *result)
 
 void MainWindow::quickSave()
 {
-    Settings::instance()->setSaveGame(m_controller->saveGame());
+    Settings::instance()->setQuickSave(m_controller->getGameState());
     qDebug()<< "Game saved!";
 }
 
 void MainWindow::quickLoad()
 {
-    QStringList saveGame = Settings::instance()->saveGame().split("|");
-    if ((saveGame.length() < 3)||(saveGame.at(3).length() < 42)){
+    if (Settings::instance()->quickSave().isNull()){
         return;
     }
-    m_controller->loadGame(saveGame.at(3), saveGame.at(0)+"|"+saveGame.at(1), saveGame.at(2).toInt(0,10));
-    qDebug()<< ("load complete: Players: " + saveGame.at(0) + " vs " + saveGame.at(1));
+    m_controller->loadGameState();
 }
 
 void MainWindow::showRules()

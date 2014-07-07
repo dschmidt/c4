@@ -17,10 +17,11 @@ public:
     void setGameWidget(ARToolkitWidget* model);
     void restartGame();
     void startGame();
-    void loadGame(QString save, QString players, int aiLevel);
-    QString saveGame();
+    void loadGameState();
+    QString getGameState();
 
 private slots:
+    void colorNameChanged();
     void onMoved(int column);
     void onDataChipDropped(bool success, int column, Player* player);
 
