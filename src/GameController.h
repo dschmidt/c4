@@ -25,9 +25,10 @@ signals:
     void currentPlayerChange(Player* player);
 
 private slots:
-    void colorNameChanged();
+    void onColorNameChanged();
     void onMoved(int column);
     void onDataChipDropped(bool success, int column, Player* player);
+    void onNextPlayer();
 
 private:
     Player* m_currentPlayer;

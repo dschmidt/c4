@@ -54,7 +54,7 @@ const QString Settings::aiName() const
 
 void Settings::setAiNameList(const QString& name)
 {
-    setValue( "aiNameList", "Human|Bob|Weak|Normal|Strong|Chuck Norris" );
+    setValue( "aiNameList", name );
 }
 
 const QString Settings::aiNameList() const

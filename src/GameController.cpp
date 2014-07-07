@@ -7,6 +7,7 @@
 #include "Settings.h"
 #include "GameWidget.h"
 
+#include <QTimer>
 #include <QDebug>
 
 GameController::GameController( QObject* parent )
@@ -25,7 +26,7 @@ void GameController::setGameModel( GameModel* model )
 
     m_model = model;
     connect(m_model, SIGNAL(dataChipDropped(bool, int, Player*)), SLOT(onDataChipDropped(bool, int, Player*)));
-    connect(Settings::instance(), SIGNAL(settingsChanged()),this , SLOT(colorNameChanged()));
+    connect(Settings::instance(), SIGNAL(settingsChanged()),this , SLOT(onColorNameChanged()));
 }
 
 void GameController::setGameWidget(GameWidget* widget )
@@ -39,7 +40,7 @@ void GameController::setGameWidget(GameWidget* widget )
     connect(this, SIGNAL(currentPlayerChange(Player*)), m_widget, SLOT(onCurrentPlayerChanged(Player*)));
 }
 
-void GameController::colorNameChanged()
+void GameController::onColorNameChanged()
 {
     startGame();
 }
@@ -131,13 +132,18 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
         {
             m_currentPlayer = m_model->player1();
         }
-
-        m_currentPlayer->move(m_model->field);
+        QTimer::singleShot(400,this, SLOT(onNextPlayer()));
+        //m_currentPlayer->move(m_model->field);
     }
     else
     {
         qDebug() << Q_FUNC_INFO << "Move failed, let player repeat input";
     }
+}
+
+void GameController::onNextPlayer()
+{
+    m_currentPlayer->move(m_model->field);
 }
 
 QString GameController::getGameState(){
