@@ -19,11 +19,10 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     s_ui->settingsColor2Button->setColor(s->aiColor());
 
     s_ui->settingsP2Settings->clear();
-    Settings::instance()->setAiNameList("reset");
     QStringList aiList = Settings::instance()->aiNameList().split("|");
     s_ui->settingsP2Settings->addItems(aiList);
     s_ui->settingsP2Settings->setCurrentIndex(s->aiLevel());
-    connect(s_ui->settingsP2Settings, SIGNAL(currentIndexChanged(int)), this, SLOT(p2SettingsChanged()));
+    connect(s_ui->settingsP2Settings, SIGNAL(currentIndexChanged(int)), this, SLOT(onP2SettingsChanged()));
     connect(s_ui->buttonBox, SIGNAL(rejected()),this, SLOT(cancel()));
     connect(s_ui->buttonBox, SIGNAL(accepted()), this, SLOT(save()));
 }
@@ -33,7 +32,7 @@ SettingsDialog::~SettingsDialog()
     delete s_ui;
 }
 
-void SettingsDialog::p2SettingsChanged()
+void SettingsDialog::onP2SettingsChanged()
 {
     if (s_ui->settingsP2Settings->currentIndex() == 0)
     {

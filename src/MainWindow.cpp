@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     new Settings(this);
 
     // acces them later on via instance()
-    Settings* s = Settings::instance();
+    /*Settings* s = Settings::instance();
 
     qDebug() << "***** Current settings *****";
     qDebug() << "Player name" << s->playerName();
@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << "AI name" << s->aiName();
     qDebug() << "AI color" << s->aiColor();
     qDebug() << "AI level" << s->aiLevel();
-    qDebug();
+    qDebug();*/
 
     m_ui->setupUi(this);
     m_ui->statusbar->setVisible(false);
@@ -94,7 +94,7 @@ void MainWindow::resolutionChange()
     actionsToUncheck.removeLast();
     for(int i = 0; i < actionsToUncheck.length(); i++)
     {
-        qobject_cast <QAction*>(actionsToUncheck.at(i))->  setChecked(false);
+        qobject_cast <QAction*>(actionsToUncheck.at(i))->setChecked(false);
     }
     caller->setChecked(true);
 }
@@ -111,15 +111,18 @@ void MainWindow::loadOptions()
 {
     //load the resolution and check the right action in the mainwindow
     Settings* s = Settings::instance();
-    QString resolutionString = QString::number(s->cameraWidth(),10).append("x");
+    QString resolutionString = QString(QString::number(s->cameraWidth(),10) + "x" + QString::number(s->cameraHeight(),10));
     QList <QAction*> actionsToUncheck = m_ui->menuResolution->actions();
     actionsToUncheck.removeLast();
     for(int i = 0; i < actionsToUncheck.length(); i++){
-        if (actionsToUncheck.at(i)->text().contains(resolutionString)){
+        if (actionsToUncheck.at(i)->text().compare(resolutionString) == 0)
+        {
             qobject_cast <QAction*>(actionsToUncheck.at(i))->setChecked(true);
         }
-        else{
-            qobject_cast <QAction*>(actionsToUncheck.at(i))->setChecked(false);}
+        else
+        {
+            qobject_cast <QAction*>(actionsToUncheck.at(i))->setChecked(false);
+        }
     }
 }
 
