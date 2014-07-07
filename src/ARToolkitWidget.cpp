@@ -4,6 +4,7 @@
 
 #include "Pattern.h"
 #include "GlObject.h"
+#include "Settings.h"
 
 #include <QDebug>
 #include <QApplication>
