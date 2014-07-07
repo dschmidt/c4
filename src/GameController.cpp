@@ -4,6 +4,7 @@
 #include "Players/AiPlayer.h"
 #include "Players/AiPlayerGood.h"
 #include "GameModel.h"
+#include "Settings.h"
 
 #include <QDebug>
 
@@ -23,6 +24,7 @@ void GameController::setGameModel( GameModel* model )
 
     m_model = model;
     connect(m_model, SIGNAL(dataChipDropped(bool, int, Player*)), SLOT(onDataChipDropped(bool, int, Player*)));
+    connect(Settings::instance(), SIGNAL(settingsChanged()),this , SLOT(colorNameChanged()));
 }
 
 void GameController::setGameWidget( ARToolkitWidget* widget )
@@ -30,20 +32,44 @@ void GameController::setGameWidget( ARToolkitWidget* widget )
     m_widget = widget;
 }
 
+void GameController::colorNameChanged()
+{
+    startGame();
+}
 
 void GameController::startGame()
 {
-    HumanPlayer* player1 = new HumanPlayer(QLatin1String("Human"), this);
-    player1->setColor(QColor(Qt::red));
+    HumanPlayer* player1 = new HumanPlayer(Settings::instance()->playerName(), this);
+    player1->setColor(Settings::instance()->playerColor());
     player1->setGameWidget(m_widget);
+    if (m_model->player1() != NULL)
+    {
+        m_model->player1()->deleteLater();
+        m_model->player1()->disconnect();
 
+    }
     m_model->setPlayer1(player1);
     connect(player1, SIGNAL(moved(int)), SLOT(onMoved(int)));
-
-    Player* player2 = new AiPlayerGood(QLatin1String("Ai"), this);
-    player2->setColor(QColor(Qt::yellow));
+    Player* player2;
+    if (Settings::instance()->aiLevel() == 0)
+    {
+        player2 = new HumanPlayer(Settings::instance()->aiName(), this);
+        player2->setColor(Settings::instance()->aiColor());
+        ((HumanPlayer*)player2)->setGameWidget(m_widget);
+    }
+    else
+    {
+        player2 = new AiPlayer(Settings::instance()->aiName(), this);
+        player2->setColor(Settings::instance()->aiColor());
+    }
+    if (m_model->player2() != NULL)
+    {
+        m_model->player2()->deleteLater();
+        m_model->player2()->disconnect();
+    }
     m_model->setPlayer2(player2);
     connect(player2, SIGNAL(moved(int)), SLOT(onMoved(int)));
+
 
     restartGame();
 }
@@ -63,7 +89,6 @@ void GameController::restartGame()
     {
         m_currentPlayer = m_model->player2();
     }
-
     m_currentPlayer->move(m_model->field);
 }
 
@@ -103,4 +128,25 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
     {
         qDebug() << Q_FUNC_INFO << "Move failed, let player repeat input";
     }
+}
+
+QString GameController::getGameState(){
+        QString save(m_model->player1()->name()+"|"+m_model->player2()->name() + "|"+ Settings::instance()->aiLevel() +"|");
+        return save + m_model->getGame();
+}
+
+void GameController::loadGameState(){
+    //loads player names and ai configuration out of a string into the gamemodel
+    QStringList saveGame = Settings::instance()->quickSave().split("|");
+    if ((saveGame.length() < 3)||(saveGame.at(3).length() < 42)){
+        startGame();
+        return;
+    }
+    Settings::instance()->setAiLevel(saveGame.at(2).toInt());
+    Settings::instance()->setPlayerName(saveGame.at(0));
+    Settings::instance()->setAiName(saveGame.at(1));
+    startGame();
+    //string with chip-position given to the gamemodel
+    m_model->setGame(saveGame.at(3));
+    qDebug()<< ("load complete: Players: " + saveGame.at(0) + " vs " + saveGame.at(1));
 }

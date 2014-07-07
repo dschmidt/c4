@@ -198,3 +198,50 @@ int GameModel::wins(Player* player) const
 
     return wins;
 }
+
+QString GameModel::getGame(){
+    QString fieldSave;
+    for(int i=0;i<6;i++){
+        for(int j=0;j<7;j++){
+            if(field[i][j] == NULL)
+            {
+                fieldSave.append("0");
+            }
+            else if (field[i][j] == player2())
+            {
+                fieldSave.append("2");
+            }
+            else
+            {
+                fieldSave.append("1");
+            }
+        }
+    }
+    return fieldSave;
+}
+
+void GameModel::setGame(QString saveGame){
+    QString helper = saveGame.left(1);
+    for(int i=0;i<6;i++){
+        for(int j=0;j<7;j++){
+            if(helper.toInt(0,10) == 0)
+            {
+                field[i][j] = NULL;
+                saveGame.remove(0,1);
+                helper = saveGame.left(1);
+            }
+            else if (helper.toInt(0,10) == 2)
+            {
+                field[i][j] = player2();
+                saveGame.remove(0,1);
+                helper = saveGame.left(1);
+            }
+            else
+            {
+                field[i][j] = player1();
+                saveGame.remove(0,1);
+                helper = saveGame.left(1);
+            }
+        }
+    }
+}

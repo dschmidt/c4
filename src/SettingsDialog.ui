@@ -48,7 +48,16 @@
     <property name="verticalSpacing">
      <number>10</number>
     </property>
-    <property name="margin">
+    <property name="leftMargin">
+     <number>1</number>
+    </property>
+    <property name="topMargin">
+     <number>1</number>
+    </property>
+    <property name="rightMargin">
+     <number>1</number>
+    </property>
+    <property name="bottomMargin">
      <number>1</number>
     </property>
     <item row="0" column="0" colspan="2">
@@ -62,17 +71,20 @@
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QLabel" name="settingsNameLabel">
+     <widget class="QLabel" name="settingsName1Label">
       <property name="toolTip">
-       <string>Choose your Name</string>
+       <string>Player 1 Name</string>
       </property>
       <property name="text">
-       <string>Name:</string>
+       <string>Player 1 Name:</string>
       </property>
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QLineEdit" name="settingsNameTextbox">
+     <widget class="QLineEdit" name="settingsName1Textbox">
+      <property name="toolTip">
+       <string>Player 1 Name</string>
+      </property>
       <property name="inputMask">
        <string notr="true"/>
       </property>
@@ -82,29 +94,29 @@
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="settingsColorLabel">
+     <widget class="QLabel" name="settingsColor1Label">
       <property name="toolTip">
-       <string>Choose your color</string>
+       <string>Color for Player 1</string>
       </property>
       <property name="text">
-       <string>Color:</string>
+       <string>Player 1 Color:</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="settingsAiLabel">
+    <item row="4" column="0">
+     <widget class="QLabel" name="settingsPlayer2Label">
       <property name="toolTip">
-       <string>Choose the AI-Level</string>
+       <string>Choose Player 2 setting</string>
       </property>
       <property name="text">
-       <string>AI-Level:</string>
+       <string>Player 2 Setting:</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QComboBox" name="settingsAiBox">
+    <item row="4" column="1">
+     <widget class="QComboBox" name="settingsP2Settings">
       <property name="toolTip">
-       <string>Choose the AI-Level</string>
+       <string>Choose Player 2 setting</string>
       </property>
       <property name="duplicatesEnabled">
        <bool>false</bool>
@@ -112,7 +124,7 @@
      </widget>
     </item>
     <item row="2" column="1">
-     <widget class="ColorButton" name="settingsColorButton">
+     <widget class="ColorButton" name="settingsColor1Button">
       <property name="toolTip">
        <string>Choose your color</string>
       </property>
@@ -121,23 +133,46 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="settingsAiColorLabel">
+    <item row="5" column="0">
+     <widget class="QLabel" name="settingsColor2Label">
       <property name="toolTip">
-       <string>Choose your color</string>
+       <string>Color for Player 2</string>
       </property>
       <property name="text">
-       <string>AiColor:</string>
+       <string>Player 2 Color:</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="ColorButton" name="settingsAiColorButton">
+    <item row="5" column="1">
+     <widget class="ColorButton" name="settingsColor2Button">
       <property name="toolTip">
        <string>Choose your color</string>
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="settingsName2Label">
+      <property name="toolTip">
+       <string>Player 2 Name, only needed for Player 2 Human</string>
+      </property>
+      <property name="text">
+       <string>Player 2 Name:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="settingsName2Textbox">
+      <property name="toolTip">
+       <string>Player 2 Name, only needed for Player 2 Human</string>
+      </property>
+      <property name="inputMask">
+       <string notr="true"/>
+      </property>
+      <property name="maxLength">
+       <number>50</number>
       </property>
      </widget>
     </item>

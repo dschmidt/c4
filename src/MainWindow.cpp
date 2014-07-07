@@ -9,6 +9,7 @@
 #include "GameResult.h"
 
 #include <QDebug>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -31,9 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << "AI color" << s->aiColor();
     qDebug() << "AI level" << s->aiLevel();
     qDebug();
-    qDebug() << "Camera width" << s->cameraWidth();
-    qDebug() << "Camera height" << s->cameraHeight();
-    qDebug();
 
     m_ui->setupUi(this);
     m_ui->statusbar->setVisible(false);
@@ -45,6 +43,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_ui->action1920x1080, SIGNAL(triggered()), this, SLOT(resolutionChange()));
     connect(m_ui->actionPlayer, SIGNAL(triggered()), this, SLOT(openSettingsDialog()));
     connect(m_ui->actionNew_Game, SIGNAL(triggered()), this, SLOT(newGame()));
+
+    connect(m_ui->actionQuicksave, SIGNAL(triggered()), this, SLOT(quickSave()));
+    connect(m_ui->actionQuickload, SIGNAL(triggered()), this, SLOT(quickLoad()));
+    connect(m_ui->actionImpressum_2, SIGNAL(triggered()), this, SLOT(showImpressum()));
+    connect(m_ui->actionHow_to_play, SIGNAL(triggered()), this, SLOT(showRules()));
 
     setupGame();
 }
@@ -108,7 +111,7 @@ void MainWindow::loadOptions()
 {
     //load the resolution and check the right action in the mainwindow
     Settings* s = Settings::instance();
-    QString resolutionString = QString("x").arg(s->cameraWidth());
+    QString resolutionString = QString::number(s->cameraWidth(),10).append("x");
     QList <QAction*> actionsToUncheck = m_ui->menuResolution->actions();
     actionsToUncheck.removeLast();
     for(int i = 0; i < actionsToUncheck.length(); i++){
@@ -122,7 +125,7 @@ void MainWindow::loadOptions()
 
 void MainWindow::newGame()
 {
-    m_controller->restartGame();
+    m_controller->startGame();
 }
 
 void MainWindow::onGameFinishedWithResult(GameResult *result)
@@ -144,4 +147,28 @@ void MainWindow::onGameFinishedWithResult(GameResult *result)
     m_ui->player2Label->setText(QString("%1: %2").arg(result->player2->name()).arg(m_model->wins(result->player2)));
 
     m_controller->restartGame();
+}
+
+void MainWindow::quickSave()
+{
+    Settings::instance()->setQuickSave(m_controller->getGameState());
+    qDebug()<< "Game saved!";
+}
+
+void MainWindow::quickLoad()
+{
+    if (Settings::instance()->quickSave().isNull()){
+        return;
+    }
+    m_controller->loadGameState();
+}
+
+void MainWindow::showRules()
+{
+    QMessageBox::information(this, "Rules", "http://en.wikipedia.org/wiki/Connect_Four",QMessageBox::Default, QMessageBox::Default);
+}
+
+void MainWindow::showImpressum()
+{
+    QMessageBox::information(this, "Impressum", "Fachprojekt:Visual Computing",QMessageBox::Default, QMessageBox::Default);
 }

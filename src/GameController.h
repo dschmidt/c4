@@ -15,10 +15,13 @@ public:
     explicit GameController(QObject* parent = 0);
     void setGameModel(GameModel* model);
     void setGameWidget(ARToolkitWidget* model);
-    void startGame();
     void restartGame();
+    void startGame();
+    void loadGameState();
+    QString getGameState();
 
 private slots:
+    void colorNameChanged();
     void onMoved(int column);
     void onDataChipDropped(bool success, int column, Player* player);
 

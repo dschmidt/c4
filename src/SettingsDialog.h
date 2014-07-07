@@ -20,6 +20,7 @@ private:
     bool isAi;
 
 private slots:
+    void p2SettingsChanged();
     void cancel();
     void save();
 };
