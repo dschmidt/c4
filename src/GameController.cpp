@@ -123,17 +123,7 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
 {
     if(success)
     {
-        qDebug() << Q_FUNC_INFO << "Successful move, over to the next player";
-        if(m_currentPlayer == m_model->player1())
-        {
-            m_currentPlayer = m_model->player2();
-        }
-        else
-        {
-            m_currentPlayer = m_model->player1();
-        }
-        QTimer::singleShot(400,this, SLOT(onNextPlayer()));
-        //m_currentPlayer->move(m_model->field);
+        QTimer::singleShot(1000, this, SLOT(onNextPlayer()));
     }
     else
     {
@@ -143,6 +133,16 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
 
 void GameController::onNextPlayer()
 {
+    qDebug() << Q_FUNC_INFO << "Successful move, over to the next player";
+    if(m_currentPlayer == m_model->player1())
+    {
+        m_currentPlayer = m_model->player2();
+    }
+    else
+    {
+        m_currentPlayer = m_model->player1();
+    }
+
     m_currentPlayer->move(m_model->field);
 }
 
