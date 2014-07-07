@@ -110,6 +110,6 @@ void Settings::setQuickSave(const QString& save)
 
 const QString Settings::quickSave() const
 {
-    return value( "quickSave", NULL ).value< QString >();
+    return value( "quickSave" ).value< QString >();
 }
 
