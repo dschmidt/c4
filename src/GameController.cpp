@@ -55,6 +55,7 @@ void GameController::startGame()
     {
         player2 = new HumanPlayer(Settings::instance()->aiName(), this);
         player2->setColor(Settings::instance()->aiColor());
+        ((HumanPlayer*)player2)->setGameWidget(m_widget);
     }
     else
     {
