@@ -410,7 +410,7 @@ bool AiPlayerGood::checkBad2(int row, int column, Player *field[6][7])
             }
             if(counter == 1 && column<4 && row>2){
                 if(field[row-1][column+1] != NULL && field[row-2][column+2] != NULL && field[row-3][column+3] == NULL){
-                    tempPlayer==field[row-1][column+1];
+                    tempPlayer = field[row-1][column+1];
                     if(tempPlayer==field[row-2][column+2]){
                         if(row-3 == 0){
                             return true;
