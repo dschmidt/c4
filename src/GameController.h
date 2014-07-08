@@ -21,14 +21,17 @@ public:
     void loadGameState();
     QString getGameState();
 
+
 signals:
     void currentPlayerChange(Player* player);
+    void gameStarted();
 
 private slots:
     void onColorNameChanged();
     void onMoved(int column);
     void onDataChipDropped(bool success, int column, Player* player);
     void onNextPlayer();
+    Player* createPlayerWithLevel(QString name, int level);
 
 private:
     Player* m_currentPlayer;

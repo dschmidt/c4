@@ -30,6 +30,9 @@ public:
     void setAiLevel(int aiLevel);
     int aiLevel() const;
 
+    void setPlayerLevel(int playerLevel);
+    int playerLevel() const;
+
     void setCameraWidth(int cameraWidth);
     int cameraWidth() const;
 
