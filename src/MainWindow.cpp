@@ -148,10 +148,10 @@ void MainWindow::onGameFinishedWithResult(GameResult *result)
     //the player gets a view on the field to see where the four chips are until he presses Ok
     if(result->winner)
     {
-        QMessageBox::information(this, "Game Over", result->winner->name()+" wins this game\n\nNext game starts",QMessageBox::Default, QMessageBox::Default);
+        //QMessageBox::information(this, "Game Over", result->winner->name()+" wins this game\n\nNext game starts",QMessageBox::Default, QMessageBox::Default);
     }
     else{
-        QMessageBox::information(this, "Game Over", "you played a drawn\nNext game starts",QMessageBox::Default, QMessageBox::Default);
+        //QMessageBox::information(this, "Game Over", "Game ended in a draw \n\nNext game starts",QMessageBox::Default, QMessageBox::Default);
     }
 
     m_controller->restartGame();

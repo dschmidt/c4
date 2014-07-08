@@ -31,10 +31,11 @@ private slots:
     void onMoved(int column);
     void onDataChipDropped(bool success, int column, Player* player);
     void onNextPlayer();
+    Player* createPlayerWithLevel(QString name, int level);
 
 private:
     Player* m_currentPlayer;
-    GameModel* m_model;;
+    GameModel* m_model;
     GameWidget* m_widget;
 };
 

@@ -4,6 +4,7 @@
 
 #include <QColorDialog>
 #include <QStringList>
+#include <QDebug>
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),
@@ -27,8 +28,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
     s_ui->settingsP2Settings->addItems(aiList);
     s_ui->settingsP2Settings->setCurrentIndex(s->aiLevel());
 
-    connect(s_ui->settingsP1Settings, SIGNAL(currentIndexChanged(int)), this, SLOT(onP1SettingsChanged()));
-    connect(s_ui->settingsP2Settings, SIGNAL(currentIndexChanged(int)), this, SLOT(onP2SettingsChanged()));
+    connect(s_ui->settingsP1Settings, SIGNAL(currentIndexChanged(int)), this, SLOT(onPlayerSettingsChanged()));
+    connect(s_ui->settingsP2Settings, SIGNAL(currentIndexChanged(int)), this, SLOT(onPlayerSettingsChanged()));
     connect(s_ui->buttonBox, SIGNAL(rejected()),this, SLOT(cancel()));
     connect(s_ui->buttonBox, SIGNAL(accepted()), this, SLOT(save()));
 }
@@ -38,53 +39,37 @@ SettingsDialog::~SettingsDialog()
     delete s_ui;
 }
 
-void SettingsDialog::onP2SettingsChanged()
+void SettingsDialog::onPlayerSettingsChanged()
 {
-    s_ui->settingsName2Textbox->setReadOnly(false);
-    switch (s_ui->settingsP2Settings->currentIndex())
-    {
-        case 1:
-            s_ui->settingsName2Textbox->setText("Bob");
-            break;
-        case 2:
-            s_ui->settingsName2Textbox->setText("Hilde");
-            break;
-        case 3:
-            //AI Player Hard still missing
-            s_ui->settingsName2Textbox->setText("Roger");
-            break;
-        case 4:
-            //AI Player Chuck Norris still missing
-            s_ui->settingsName2Textbox->setText("Chuck Norris");
-            s_ui->settingsName2Textbox->setReadOnly(true);
-            break;
-        default:
-            s_ui->settingsName2Textbox->setText("Player2");
+    QComboBox *caller = qobject_cast <QComboBox*>(sender());
+    QLineEdit *playerTextBox;
+    if (caller == s_ui->settingsP1Settings){
+        playerTextBox = s_ui->settingsName1Textbox;
     }
-}
-
-void SettingsDialog::onP1SettingsChanged()
-{
-    s_ui->settingsName1Textbox->setReadOnly(false);
-    switch (s_ui->settingsP1Settings->currentIndex())
+    else
     {
-        case 1:
-            s_ui->settingsName1Textbox->setText("Bob");
-            break;
-        case 2:
-            s_ui->settingsName1Textbox->setText("Hilde");
-            break;
-        case 3:
-            //AI Player Hard still missing
-            s_ui->settingsName1Textbox->setText("Roger");
-            break;
-        case 4:
-            //AI Player Chuck Norris still missing
-            s_ui->settingsName1Textbox->setText("Chuck Norris");
-            s_ui->settingsName1Textbox->setReadOnly(true);
-            break;
-        default:
-            s_ui->settingsName1Textbox->setText("Player1");
+        playerTextBox = s_ui->settingsName2Textbox;
+    }
+    playerTextBox->setReadOnly(false);
+    switch (caller->currentIndex())
+    {
+    case 1:
+        playerTextBox->setText("Bob");
+        break;
+    case 2:
+        playerTextBox->setText("Hilde");
+        break;
+    case 3:
+        //AI Player Hard still missing
+        playerTextBox->setText("Roger");
+        break;
+    case 4:
+        //AI Player Chuck Norris still missing
+        playerTextBox->setText("Chuck Norris");
+        playerTextBox->setReadOnly(true);
+        break;
+    default:
+        playerTextBox->setText("Player2");
     }
 }
 
