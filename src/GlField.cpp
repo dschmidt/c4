@@ -7,6 +7,7 @@
 
 GlField::GlField(QWidget* parent)
     : GlObject(parent)
+    , m_highlightedColumn(-1)
 {
     GameWidget* widget = qobject_cast<GameWidget*>(parent);
     connect(widget, SIGNAL(arHighlightColumn(int)), this, SLOT(onHighlightColumn(int)));
