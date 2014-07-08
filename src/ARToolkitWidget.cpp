@@ -311,6 +311,7 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
         updateGL();
     }
 #else
+    SleeperThread::msleep(10);
     foreach (Pattern* patt, m_patterns.keys())
     {
         patt->found = TRUE;

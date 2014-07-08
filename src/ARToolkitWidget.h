@@ -19,6 +19,8 @@ class GameModel;
 #include <AR/param.h>			// arParamDisp()
 #include <AR/ar.h>
 #include <AR/gsub_lite.h>
+#else
+#include <QThread>
 #endif
 
 class GlObject;
@@ -72,6 +74,16 @@ private:
     // Drawing.
     ARParam	gARTCparam;
     ARGL_CONTEXT_SETTINGS_REF gArglSettings;
+#else
+    // This private helper class exposes the msleep method
+    class SleeperThread : public QThread
+    {
+    public:
+        static void msleep(unsigned long msecs)
+        {
+            QThread::msleep(msecs);
+        }
+    };
 #endif
     int gDrawRotate;
     float gDrawRotateAngle;			// For use in drawing.
