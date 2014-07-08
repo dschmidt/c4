@@ -23,6 +23,9 @@ GameWidget::GameWidget(QWidget* parent)
     addPattern(pattChip, chip);
 #endif
     addPattern(pattField, field);
+
+    m_timeout.setSingleShot(true);
+    connect(&m_timeout, SIGNAL(timeout()), SLOT(onMarkerTimeout()));
 }
 
 void GameWidget::timerEvent(QTimerEvent* event)
@@ -42,10 +45,11 @@ void GameWidget::timerEvent(QTimerEvent* event)
         vect[1] = pattField->trans[0][1] * diff[0] + pattField->trans[1][1] * diff[1] + pattField->trans[2][1] * diff[2];
         vect[2] = pattField->trans[0][2] * diff[0] + pattField->trans[1][2] * diff[1] + pattField->trans[2][2] * diff[2];
         // print transformed vector to debug output
-        qDebug() << Q_FUNC_INFO << vect[0] << " " << vect[1] << " " << vect[2];
+//        qDebug() << Q_FUNC_INFO << vect[0] << " " << vect[1] << " " << vect[2];
 
         int column = (vect[0] + 120) / 35;
         emit arHighlightColumn(column);
+        m_timeout.start(200);
         if (vect[2] < 230 && column >= 0 && column <= 6)
         {
             if (!alreadyEmitted)
@@ -115,6 +119,11 @@ void GameWidget::onGameFinished(Player *winner)
         qDebug() << Q_FUNC_INFO << "Field is full...Game is over";
     }
 
+}
+
+void GameWidget::onMarkerTimeout()
+{
+    emit arHighlightColumn(-1);
 }
 
 
