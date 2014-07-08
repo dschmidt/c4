@@ -15,6 +15,8 @@ GameController::GameController( QObject* parent )
     , m_currentPlayer(0)
     , m_model(0)
 {
+    connect(&m_turnChangeTimer, SIGNAL(timeout()),SLOT(onNextPlayer()));
+    m_turnChangeTimer.setSingleShot(true);
 }
 
 void GameController::setGameModel( GameModel* model )
@@ -27,6 +29,7 @@ void GameController::setGameModel( GameModel* model )
     m_model = model;
     connect(m_model, SIGNAL(dataChipDropped(bool, int, Player*)), SLOT(onDataChipDropped(bool, int, Player*)));
     connect(Settings::instance(), SIGNAL(settingsChanged()),this , SLOT(onColorNameChanged()));
+
 }
 
 void GameController::setGameWidget(GameWidget* widget )
@@ -108,8 +111,10 @@ void GameController::restartGame()
     {
         m_currentPlayer = m_model->player2();
     }
-
-    onNextPlayer();
+    //connect signals of current player
+    connect(m_currentPlayer, SIGNAL(moved(int)), SLOT(onMoved(int)));
+    emit currentPlayerChange(m_currentPlayer);
+    m_currentPlayer->move(m_model->field);
 }
 
 void GameController::onMoved(int column)
@@ -130,13 +135,10 @@ void GameController::onMoved(int column)
 
 void GameController::onDataChipDropped(bool success, int column, Player *player)
 {
-    qDebug() << "FOOOOOOOOOOOOOOBAR: singleShot";
-
     if(success)
     {
         m_currentPlayer->disconnect(SIGNAL(moved(int)));
-        QTimer::singleShot(200,this, SLOT(onNextPlayer()));
-        //m_currentPlayer->move(m_model->field);
+        m_turnChangeTimer.start(400);
     }
     else
     {
@@ -146,8 +148,6 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
 
 void GameController::onNextPlayer()
 {
-    qDebug() << "FOOOOOOOOOOOOOOBAR: onNextPlayer";
-    //qDebug() << Q_FUNC_INFO << "Successful move, over to the next player";
     if(m_currentPlayer == m_model->player1())
     {
         m_currentPlayer = m_model->player2();
@@ -156,10 +156,7 @@ void GameController::onNextPlayer()
     {
         m_currentPlayer = m_model->player1();
     }
-
-    //connect signals of current player
     connect(m_currentPlayer, SIGNAL(moved(int)), SLOT(onMoved(int)));
-    emit currentPlayerChange(m_currentPlayer);
     m_currentPlayer->move(m_model->field);
 }
 
