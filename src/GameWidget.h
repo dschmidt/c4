@@ -3,6 +3,8 @@
 
 #include "ARToolkitWidget.h"
 
+#include <QTimer>
+
 class GlChip;
 class GlField;
 class Player;
@@ -29,6 +31,7 @@ protected:
 
 private slots:
     void onGameFinished(Player* winner);
+    void onMarkerTimeout();
 
 private:
     Pattern* pattChip;
@@ -37,6 +40,7 @@ private:
     GlField* field;
     GameModel* m_model;
     bool alreadyEmitted;
+    QTimer m_timeout;
 };
 
 #endif // GAMEWIDGET_H

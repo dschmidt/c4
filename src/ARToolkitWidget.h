@@ -60,7 +60,6 @@ private:
     void debugReportMode(const ARGL_CONTEXT_SETTINGS_REF arglContextSettings);
 #endif
     int setupMarker(const char *patt_name, int *patt_id);
-    void drawCube(void);
 
 #ifdef ARTOOLKIT_FOUND
     // Image acquisition.
