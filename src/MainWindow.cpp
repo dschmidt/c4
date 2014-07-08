@@ -146,7 +146,13 @@ void MainWindow::onGameFinishedWithResult(GameResult *result)
     m_ui->player1Label->setText(QString("%1: %2").arg(result->player1->name()).arg(m_model->wins(result->player1)));
     m_ui->player2Label->setText(QString("%1: %2").arg(result->player2->name()).arg(m_model->wins(result->player2)));
     //the player gets a view on the field to see where the four chips are until he presses Ok
-    QMessageBox::information(this, "Game Over", result->winner->name()+" wins",QMessageBox::Default, QMessageBox::Default);
+    if(result->winner)
+    {
+        QMessageBox::information(this, "Game Over", result->winner->name()+" wins this game\n\nNext game starts",QMessageBox::Default, QMessageBox::Default);
+    }
+    else{
+        QMessageBox::information(this, "Game Over", "you played a drawn\nNext game starts",QMessageBox::Default, QMessageBox::Default);
+    }
 
     m_controller->restartGame();
 }

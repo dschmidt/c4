@@ -75,7 +75,6 @@ void GameController::startGame()
         m_model->player1()->disconnect();
     }
     m_model->setPlayer1(player1);
-    connect(player1, SIGNAL(moved(int)), SLOT(onMoved(int)));
     Player* player2;
     switch (Settings::instance()->aiLevel())
     {
@@ -104,7 +103,6 @@ void GameController::startGame()
         m_model->player2()->disconnect();
     }
     m_model->setPlayer2(player2);
-    connect(player2, SIGNAL(moved(int)), SLOT(onMoved(int)));
     emit gameStarted();
     restartGame();
 }
@@ -118,11 +116,13 @@ void GameController::restartGame()
     int playerNumber = qrand() % 2;
     if(playerNumber == 0)
     {
+        connect(m_model->player1(), SIGNAL(moved(int)), SLOT(onMoved(int)));
         m_currentPlayer = m_model->player1();
     }
     else
     {
         m_currentPlayer = m_model->player2();
+        connect(m_model->player2(), SIGNAL(moved(int)), SLOT(onMoved(int)));
     }
 
     // change current player
