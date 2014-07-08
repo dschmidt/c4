@@ -20,18 +20,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // instantiate settings once here
     new Settings(this);
-
     // acces them later on via instance()
-    /*Settings* s = Settings::instance();
 
-    qDebug() << "***** Current settings *****";
-    qDebug() << "Player name" << s->playerName();
-    qDebug() << "Player color" << s->playerColor();
-    qDebug();
-    qDebug() << "AI name" << s->aiName();
-    qDebug() << "AI color" << s->aiColor();
-    qDebug() << "AI level" << s->aiLevel();
-    qDebug();*/
+    //Set Ai-List needed until list is final
+    Settings::instance()->setAiNameList("Human|WeakAI|NormalAI|HardAI|ChuckNorris");
 
     m_ui->setupUi(this);
     m_ui->statusbar->setVisible(false);
@@ -67,11 +59,11 @@ void MainWindow::setupGame()
     connect(m_model, SIGNAL(gameFinishedWithResult(GameResult*)), SLOT(onGameFinishedWithResult(GameResult*)));
 
     m_controller = new GameController(this);
+    connect(m_controller, SIGNAL(gameStarted()), this, SLOT(onGameStart()));
 
     m_controller->setGameModel(m_model);
     m_gameWidget->setGameModel(m_model);
     m_controller->setGameWidget(m_gameWidget);
-
 
     m_controller->startGame();
 
@@ -131,6 +123,12 @@ void MainWindow::newGame()
     m_controller->startGame();
 }
 
+void MainWindow::onGameStart()
+{
+    m_ui->player1Label->setText(QString("%1: 0").arg(Settings::instance()->playerName()));
+    m_ui->player2Label->setText(QString("%1: 0").arg(Settings::instance()->aiName()));
+}
+
 void MainWindow::onGameFinishedWithResult(GameResult *result)
 {
     QString resultString("%1 wins");
@@ -145,9 +143,10 @@ void MainWindow::onGameFinishedWithResult(GameResult *result)
 
     m_ui->resultWidget->addItem(new QListWidgetItem(resultString, m_ui->resultWidget));
 
-
     m_ui->player1Label->setText(QString("%1: %2").arg(result->player1->name()).arg(m_model->wins(result->player1)));
     m_ui->player2Label->setText(QString("%1: %2").arg(result->player2->name()).arg(m_model->wins(result->player2)));
+    //the player gets a view on the field to see where the four chips are until he presses Ok
+    QMessageBox::information(this, "Game Over", result->winner->name()+" wins",QMessageBox::Default, QMessageBox::Default);
 
     m_controller->restartGame();
 }
@@ -168,10 +167,10 @@ void MainWindow::quickLoad()
 
 void MainWindow::showRules()
 {
-    QMessageBox::information(this, "Rules", "http://en.wikipedia.org/wiki/Connect_Four",QMessageBox::Default, QMessageBox::Default);
+    QMessageBox::information(this, "Rules", "Rules connect four: http://en.wikipedia.org/wiki/Connect_Four\n\nUse the chip marker to demonstrate where you want to drop your chip by moving it in front of the opening of that column.\n\n The black border of the markers must be fully visible to the camera!",QMessageBox::Default, QMessageBox::Default);
 }
 
 void MainWindow::showImpressum()
 {
-    QMessageBox::information(this, "Impressum", "Fachprojekt:Visual Computing",QMessageBox::Default, QMessageBox::Default);
+    QMessageBox::information(this, "Impressum", "Fachprojekt:Visual Computing\n\n",QMessageBox::Default, QMessageBox::Default);
 }

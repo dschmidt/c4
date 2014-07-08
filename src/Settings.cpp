@@ -59,7 +59,7 @@ void Settings::setAiNameList(const QString& name)
 
 const QString Settings::aiNameList() const
 {
-    return value( "aiNameList", "Human|Bob|Weak|Normal|Strong|Chuck Norris" ).value< QString >();
+    return value( "aiNameList", "Human|WeakAI|NormalAI|HardAI|ChuckNorris" ).value< QString >();
 }
 
 void Settings::setAiColor(const QColor& color)
@@ -81,7 +81,17 @@ void Settings::setAiLevel(int aiLevel)
 
 int Settings::aiLevel() const
 {
-    return value( "aiLevel", 1).value< int >();
+    return value( "aiLevel", 0).value< int >();
+}
+
+void Settings::setPlayerLevel(int playerLevel)
+{
+    setValue( "playerLevel", playerLevel );
+}
+
+int Settings::playerLevel() const
+{
+    return value( "playerLevel", 0).value< int >();
 }
 
 void Settings::setCameraWidth(int cameraWidth)

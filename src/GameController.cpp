@@ -7,8 +7,8 @@
 #include "Settings.h"
 #include "GameWidget.h"
 
-#include <QTimer>
 #include <QDebug>
+#include <QTimer>
 
 GameController::GameController( QObject* parent )
     : QObject(parent)
@@ -47,29 +47,57 @@ void GameController::onColorNameChanged()
 
 void GameController::startGame()
 {
-    HumanPlayer* player1 = new HumanPlayer(Settings::instance()->playerName(), this);
+    Player* player1;
+    switch (Settings::instance()->playerLevel())
+    {
+        case 1:
+            player1 = new AiPlayer(Settings::instance()->playerName(), this);
+            break;
+        case 2:
+            player1 = new AiPlayerGood(Settings::instance()->playerName(), this);
+            break;
+        case 3:
+            //AI Player Hard still missing
+            player1 = new AiPlayerGood(Settings::instance()->playerName(), this);
+            break;
+        case 4:
+            //AI Player Chuck Norris still missing
+            player1 = new AiPlayerGood(Settings::instance()->playerName(), this);
+            break;
+        default:
+            player1 = new HumanPlayer(Settings::instance()->playerName(), this);
+            ((HumanPlayer*)player1)->setGameWidget(m_widget);
+    }
     player1->setColor(Settings::instance()->playerColor());
-    player1->setGameWidget(m_widget);
     if (m_model->player1() != NULL)
     {
         m_model->player1()->deleteLater();
         m_model->player1()->disconnect();
-
     }
     m_model->setPlayer1(player1);
     connect(player1, SIGNAL(moved(int)), SLOT(onMoved(int)));
     Player* player2;
-    if (Settings::instance()->aiLevel() == 0)
+    switch (Settings::instance()->aiLevel())
     {
-        player2 = new HumanPlayer(Settings::instance()->aiName(), this);
-        player2->setColor(Settings::instance()->aiColor());
-        ((HumanPlayer*)player2)->setGameWidget(m_widget);
+        case 1:
+            player2 = new AiPlayer(Settings::instance()->aiName(), this);
+            break;
+        case 2:
+            player2 = new AiPlayerGood(Settings::instance()->aiName(), this);
+            break;
+        case 3:
+            //AI Player Hard still missing
+            player2 = new AiPlayerGood(Settings::instance()->aiName(), this);
+            break;
+        case 4:
+            //AI Player Chuck Norris still missing
+            player2 = new AiPlayerGood(Settings::instance()->aiName(), this);
+            break;
+        default:
+            player2 = new HumanPlayer(Settings::instance()->aiName(), this);
+            ((HumanPlayer*)player2)->setGameWidget(m_widget);
     }
-    else
-    {
-        player2 = new AiPlayer(Settings::instance()->aiName(), this);
-        player2->setColor(Settings::instance()->aiColor());
-    }
+    player2->setColor(Settings::instance()->aiColor());
     if (m_model->player2() != NULL)
     {
         m_model->player2()->deleteLater();
@@ -77,18 +105,17 @@ void GameController::startGame()
     }
     m_model->setPlayer2(player2);
     connect(player2, SIGNAL(moved(int)), SLOT(onMoved(int)));
-
-
+    emit gameStarted();
     restartGame();
 }
 
 void GameController::restartGame()
 {
-    qDebug() << "****** Start new game";
+    //qDebug() << "****** Start new game";
 
     m_model->resetField();
 
-    int playerNumber = qrand() % 1;
+    int playerNumber = qrand() % 2;
     if(playerNumber == 0)
     {
         m_currentPlayer = m_model->player1();
@@ -107,7 +134,7 @@ void GameController::onMoved(int column)
 {
     Player* player = qobject_cast<Player*>(sender());
 
-    qDebug() << "Player" <<  player->name() << "moved: " << column+1;
+    //qDebug() << "Player" <<  player->name() << "moved: " << column+1;
 
     if(m_model && m_currentPlayer == player)
     {
@@ -115,7 +142,7 @@ void GameController::onMoved(int column)
     }
     else
     {
-        qDebug() << "Player" << player->name() << "tried to move although it wasn't his turn";
+        //qDebug() << "Player" << player->name() << "tried to move although it wasn't his turn";
     }
 }
 
@@ -123,7 +150,10 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
 {
     if(success)
     {
-        QTimer::singleShot(1000, this, SLOT(onNextPlayer()));
+        m_model->player1()->disconnect(SIGNAL(moved(int)));
+        m_model->player2()->disconnect(SIGNAL(moved(int)));
+        QTimer::singleShot(200,this, SLOT(onNextPlayer()));
+        //m_currentPlayer->move(m_model->field);
     }
     else
     {
@@ -133,16 +163,16 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
 
 void GameController::onNextPlayer()
 {
-    qDebug() << Q_FUNC_INFO << "Successful move, over to the next player";
     if(m_currentPlayer == m_model->player1())
     {
         m_currentPlayer = m_model->player2();
+        connect(m_model->player2(), SIGNAL(moved(int)), SLOT(onMoved(int)));
     }
     else
     {
         m_currentPlayer = m_model->player1();
+        connect(m_model->player1(), SIGNAL(moved(int)), SLOT(onMoved(int)));
     }
-
     m_currentPlayer->move(m_model->field);
 }
 

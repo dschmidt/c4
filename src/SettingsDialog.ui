@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>270</width>
-    <height>225</height>
+    <height>245</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>-80</x>
-     <y>190</y>
+     <x>-90</x>
+     <y>210</y>
      <width>341</width>
      <height>32</height>
     </rect>
@@ -33,9 +33,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>0</y>
      <width>251</width>
-     <height>181</height>
+     <height>204</height>
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
@@ -93,7 +93,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="settingsColor1Label">
       <property name="toolTip">
        <string>Color for Player 1</string>
@@ -103,27 +103,7 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="settingsPlayer2Label">
-      <property name="toolTip">
-       <string>Choose Player 2 setting</string>
-      </property>
-      <property name="text">
-       <string>Player 2 Setting:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QComboBox" name="settingsP2Settings">
-      <property name="toolTip">
-       <string>Choose Player 2 setting</string>
-      </property>
-      <property name="duplicatesEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1">
+    <item row="3" column="1">
      <widget class="ColorButton" name="settingsColor1Button">
       <property name="toolTip">
        <string>Choose your color</string>
@@ -133,27 +113,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="settingsColor2Label">
-      <property name="toolTip">
-       <string>Color for Player 2</string>
-      </property>
-      <property name="text">
-       <string>Player 2 Color:</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="ColorButton" name="settingsColor2Button">
-      <property name="toolTip">
-       <string>Choose your color</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
+    <item row="4" column="0">
      <widget class="QLabel" name="settingsName2Label">
       <property name="toolTip">
        <string>Player 2 Name, only needed for Player 2 Human</string>
@@ -163,7 +123,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="4" column="1">
      <widget class="QLineEdit" name="settingsName2Textbox">
       <property name="toolTip">
        <string>Player 2 Name, only needed for Player 2 Human</string>
@@ -173,6 +133,66 @@
       </property>
       <property name="maxLength">
        <number>50</number>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="settingsPlayer2Label">
+      <property name="toolTip">
+       <string>Choose Player 2 setting</string>
+      </property>
+      <property name="text">
+       <string>Player 2 Setting:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QComboBox" name="settingsP2Settings">
+      <property name="toolTip">
+       <string>Choose Player 2 setting</string>
+      </property>
+      <property name="duplicatesEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="settingsColor2Label">
+      <property name="toolTip">
+       <string>Color for Player 2</string>
+      </property>
+      <property name="text">
+       <string>Player 2 Color:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="ColorButton" name="settingsColor2Button">
+      <property name="toolTip">
+       <string>Choose your color</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="settingsPlayer1Label">
+      <property name="toolTip">
+       <string>Choose Player 1 setting</string>
+      </property>
+      <property name="text">
+       <string>Player 1 Setting:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QComboBox" name="settingsP1Settings">
+      <property name="toolTip">
+       <string>Choose Player 2 setting</string>
+      </property>
+      <property name="duplicatesEnabled">
+       <bool>false</bool>
       </property>
      </widget>
     </item>

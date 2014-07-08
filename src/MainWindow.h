@@ -40,6 +40,7 @@ private slots:
     void quickLoad();
     void showRules();
     void showImpressum();
+    void onGameStart();
 };
 
 #endif // MAINWINDOW_H

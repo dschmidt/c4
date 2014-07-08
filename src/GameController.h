@@ -21,8 +21,10 @@ public:
     void loadGameState();
     QString getGameState();
 
+
 signals:
     void currentPlayerChange(Player* player);
+    void gameStarted();
 
 private slots:
     void onColorNameChanged();
@@ -32,7 +34,7 @@ private slots:
 
 private:
     Player* m_currentPlayer;
-    GameModel* m_model;
+    GameModel* m_model;;
     GameWidget* m_widget;
 };
 
