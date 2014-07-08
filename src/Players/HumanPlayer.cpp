@@ -35,7 +35,7 @@ void HumanPlayer::move(Player* field[6][7])
         }
         qDebug() << QString(a.c_str());
     }
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
 }
 
 void HumanPlayer::setGameWidget(GameWidget *gameWidget)

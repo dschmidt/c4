@@ -27,6 +27,7 @@ void GameController::setGameModel( GameModel* model )
     m_model = model;
     connect(m_model, SIGNAL(dataChipDropped(bool, int, Player*)), SLOT(onDataChipDropped(bool, int, Player*)));
     connect(Settings::instance(), SIGNAL(settingsChanged()),this , SLOT(onColorNameChanged()));
+    connect(&m_turnChangeTimer, SIGNAL(timeout()),SLOT(onNextPlayer()));
 }
 
 void GameController::setGameWidget(GameWidget* widget )
@@ -135,7 +136,8 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
     if(success)
     {
         m_currentPlayer->disconnect(SIGNAL(moved(int)));
-        QTimer::singleShot(200,this, SLOT(onNextPlayer()));
+        m_turnChangeTimer.start(200);
+        //QTimer::singleShot(200,this, SLOT(onNextPlayer()));
         //m_currentPlayer->move(m_model->field);
     }
     else
@@ -146,6 +148,7 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
 
 void GameController::onNextPlayer()
 {
+     m_turnChangeTimer.stop();
     if(m_currentPlayer == m_model->player1())
     {
         m_currentPlayer = m_model->player2();

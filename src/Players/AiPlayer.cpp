@@ -10,7 +10,7 @@ AiPlayer::AiPlayer(const QString& name, QObject* parent)
 
 void AiPlayer::move(Player* field[6][7])
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
 
 
 

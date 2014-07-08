@@ -10,7 +10,7 @@ AiPlayerGood::AiPlayerGood(const QString& name, QObject* parent)
 
 void AiPlayerGood::move(Player* field[6][7])
 {
-    qDebug() << Q_FUNC_INFO;
+    //qDebug() << Q_FUNC_INFO;
 
 
     int i;
