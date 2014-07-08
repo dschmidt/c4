@@ -108,10 +108,8 @@ void GameController::restartGame()
     {
         m_currentPlayer = m_model->player2();
     }
-    //connect signals of current player
-    connect(m_currentPlayer, SIGNAL(moved(int)), SLOT(onMoved(int)));
-    emit currentPlayerChange(m_currentPlayer);
-    m_currentPlayer->move(m_model->field);
+
+    onNextPlayer();
 }
 
 void GameController::onMoved(int column)
@@ -132,6 +130,8 @@ void GameController::onMoved(int column)
 
 void GameController::onDataChipDropped(bool success, int column, Player *player)
 {
+    qDebug() << "FOOOOOOOOOOOOOOBAR: singleShot";
+
     if(success)
     {
         m_currentPlayer->disconnect(SIGNAL(moved(int)));
@@ -146,6 +146,8 @@ void GameController::onDataChipDropped(bool success, int column, Player *player)
 
 void GameController::onNextPlayer()
 {
+    qDebug() << "FOOOOOOOOOOOOOOBAR: onNextPlayer";
+    //qDebug() << Q_FUNC_INFO << "Successful move, over to the next player";
     if(m_currentPlayer == m_model->player1())
     {
         m_currentPlayer = m_model->player2();
@@ -154,7 +156,10 @@ void GameController::onNextPlayer()
     {
         m_currentPlayer = m_model->player1();
     }
+
+    //connect signals of current player
     connect(m_currentPlayer, SIGNAL(moved(int)), SLOT(onMoved(int)));
+    emit currentPlayerChange(m_currentPlayer);
     m_currentPlayer->move(m_model->field);
 }
 
