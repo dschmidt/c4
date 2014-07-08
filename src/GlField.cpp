@@ -28,7 +28,7 @@ void GlField::draw()
             for (int x = 0; x < 7; x++)
             {
                 glPushMatrix();
-                glTranslatef(float(x) - 3.0f, 0.5f, float(y) + 0.5f);
+                glTranslatef(float(x) - 3.0f, 0.0f, float(y) + 0.5f);
                 glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
                 if (model && model->field[y][x])
@@ -105,74 +105,98 @@ void GlField::draw()
         {22, 23, 24, 25},
     };
 
-    if (!polyList)
+
+    polyList = glGenLists (1);
+    glNewList(polyList, GL_COMPILE);
+
+
+    for (f = 14; f < 22 ; f++)
     {
-        polyList = glGenLists (1);
-        glNewList(polyList, GL_COMPILE);
-
-
-        for (f = 14; f < 22 ; f++)
-        {
-            glColor3f (0.0, 0.0, 0.0);
-            glBegin (GL_LINE_LOOP);
-            for (i = 0; i < 4; i++)
-            {
-                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
-
-            }
-            glEnd();
-        }
-
-        for (f = 0; f < 2 ; f++)
-        {
-            glColor3f (0.0, 0.0, 0.0);
-            glBegin (GL_LINE_LOOP);
-            for (i = 0; i < 4; i++)
-            {
-                glVertex3f(field_vertices[field_line_faces[f][i]][0] * fSize, field_vertices[field_line_faces[f][i]][1] * fSize, field_vertices[field_line_faces[f][i]][2] * fSize);
-            }
-            glEnd();
-        }
-
-        glBegin (GL_QUADS);
-        for (f = 14; f < field_num_faces; f++)
-            for (i = 0; i < 4; i++)
-            {
-                glColor4f(0.137255, 0.137255, 0.556863, 0.650);
-                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
-            }
-        glEnd();
-
-
-        glBegin (GL_QUADS);
-        for (f = 0; f < 14 ; f=f+2)
-            for (i = 0; i < 4; i++)
-            {
-                glColor4f(0.137255, 0.137255, 0.556863, 0.200);
-                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
-            }
-        glEnd();
-
-        glBegin (GL_QUADS);
-        for (f = 1; f < 14 ; f=f+2)
-            for (i = 0; i < 4; i++)
-            {
-                glColor4f(0.137255, 0.137255, 0.556863, 0.150);
-                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
-                glColor3f (0.0, 0.0, 0.0);
-            }
-        glEnd();
-
         glColor3f (0.0, 0.0, 0.0);
         glBegin (GL_LINE_LOOP);
         for (i = 0; i < 4; i++)
         {
-            glVertex3f(field_vertices[field_line_faces[2][i]][0] * fSize, field_vertices[field_line_faces[2][i]][1] * fSize, field_vertices[field_line_faces[2][i]][2] * fSize);
+            glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+
         }
         glEnd();
-
-        glEndList ();
     }
+
+    for (f = 0; f < 2 ; f++)
+    {
+        glColor3f (0.0, 0.0, 0.0);
+        glBegin (GL_LINE_LOOP);
+        for (i = 0; i < 4; i++)
+        {
+            glVertex3f(field_vertices[field_line_faces[f][i]][0] * fSize, field_vertices[field_line_faces[f][i]][1] * fSize, field_vertices[field_line_faces[f][i]][2] * fSize);
+        }
+        glEnd();
+    }
+
+
+    glBegin (GL_QUADS);//separating walls & buttom
+    glColor4f(0.137255, 0.137255, 0.556863, 0.650);
+    for (f = 14; f < field_num_faces; f++)
+
+        for (i = 0; i < 4; i++)
+        {
+
+            glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+        }
+    glEnd();
+
+
+
+    glBegin (GL_QUADS);//front side
+    glColor4f(0.137255, 0.137255, 0.556863, 0.200);
+    for (f = 0; f < 14 ; f=f+2)
+        for (i = 0; i < 4; i++)
+        {
+            if(2*m_highlightedColumn==f)
+            {
+                glColor4f(1.0, 1.0, 1.0, 0.290);
+                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+
+            }
+            else
+            {
+                glColor4f(0.137255, 0.137255, 0.556863, 0.200);
+                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+            }
+        }
+    glEnd();
+
+    glBegin (GL_QUADS); //rear side
+    glColor4f(0.137255, 0.137255, 0.556863, 0.150);
+    for (f = 1; f < 14 ; f=f+2)
+
+        for (i = 0; i < 4; i++)
+        {
+            if(2*m_highlightedColumn==f-1)
+            {
+                glColor4f(1.0, 1.0, 1.0, 0.290);
+                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+
+            }
+            else
+            {
+                glColor4f(0.137255, 0.137255, 0.556863, 0.200);
+                glVertex3f(field_vertices[field_faces[f][i]][0] * fSize, field_vertices[field_faces[f][i]][1] * fSize, field_vertices[field_faces[f][i]][2] * fSize);
+            }
+        }
+    glEnd();
+
+    glColor3f (0.0, 0.0, 0.0);
+    glBegin (GL_LINE_LOOP);
+    for (i = 0; i < 4; i++)
+    {
+        glVertex3f(field_vertices[field_line_faces[2][i]][0] * fSize, field_vertices[field_line_faces[2][i]][1] * fSize, field_vertices[field_line_faces[2][i]][2] * fSize);
+    }
+    glEnd();
+
+
+    glEndList();
+
 
     glPushMatrix(); // Save world coordinate system.
     glTranslatef(0.0, 0.0, 0.5); // Place base of field on marker surface.
@@ -190,4 +214,5 @@ void GlField::onDataChipDropped(bool success, int column, Player *currentPlayer)
 void GlField::onHighlightColumn(int column)
 {
     m_highlightedColumn = column;
+
 }
