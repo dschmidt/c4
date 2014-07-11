@@ -12,7 +12,7 @@
 
 void ARToolkitWidget::addPattern(Pattern* patt, GlObject* obj)
 {
-    m_patterns[patt] = obj;
+    m_patterns.append(PattObjPair(patt, obj));
 }
 
 ARToolkitWidget::ARToolkitWidget(QWidget *parent)
@@ -205,8 +205,9 @@ void ARToolkitWidget::resizeGL(int width, int height)
 void ARToolkitWidget::drawObjects()
 {
     GLdouble m[16];
-    foreach (Pattern* patt, m_patterns.keys())
+    foreach (const PattObjPair& pair, m_patterns)
     {
+        Pattern* patt = pair.first;
         if (patt->found) {
 
             // Calculate the camera position relative to the marker.
@@ -221,7 +222,7 @@ void ARToolkitWidget::drawObjects()
 #endif
 
             // All lighting and geometry to be drawn relative to the marker goes here.
-            m_patterns[patt]->draw();
+            pair.second->draw();
 
         } // patt->found
     }
@@ -287,8 +288,9 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
             exit(-1);
         }
 
-        foreach (Pattern* patt, m_patterns.keys())
+        foreach (const PattObjPair& pair, m_patterns)
         {
+            Pattern* patt = pair.first;
             // Check through the marker_info array for highest confidence
             // visible marker matching our preferred pattern.
             k = -1;
@@ -312,8 +314,9 @@ void ARToolkitWidget::timerEvent(QTimerEvent *)
     }
 #else
     SleeperThread::msleep(10);
-    foreach (Pattern* patt, m_patterns.keys())
+    foreach (const PattObjPair& pair, m_patterns)
     {
+        Pattern* patt = pair.first;
         patt->found = TRUE;
     }
     updateGL();

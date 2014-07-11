@@ -54,7 +54,9 @@ protected:
     static const double VIEW_DISTANCE_MIN = 0.1;		// Objects closer to the camera than this will not be displayed.
     static const double VIEW_DISTANCE_MAX = 100.0;		// Objects further away from the camera than this will not be displayed.
 
-    QMap<Pattern*, GlObject*> m_patterns;
+    typedef QPair<Pattern*, GlObject*> PattObjPair;
+
+    QVector<PattObjPair> m_patterns;
 
 private:
 #ifdef ARTOOLKIT_FOUND
