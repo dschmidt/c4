@@ -2,6 +2,7 @@
 #define GAMECONTROLLER_H
 
 #include <QObject>
+#include <QTimer>
 
 class Player;
 class GameModel;
@@ -37,6 +38,7 @@ private:
     Player* m_currentPlayer;
     GameModel* m_model;
     GameWidget* m_widget;
+    QTimer m_turnChangeTimer;
 };
 
 #endif // GAMECONTROLLER_H
