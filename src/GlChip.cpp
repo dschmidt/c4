@@ -35,6 +35,7 @@ void GlChip::draw()
 
 }
 
+
 const QColor GlChip::color() const
 {
     return m_color;

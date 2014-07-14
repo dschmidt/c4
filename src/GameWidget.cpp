@@ -45,21 +45,28 @@ void GameWidget::timerEvent(QTimerEvent* event)
         vect[1] = pattField->trans[0][1] * diff[0] + pattField->trans[1][1] * diff[1] + pattField->trans[2][1] * diff[2];
         vect[2] = pattField->trans[0][2] * diff[0] + pattField->trans[1][2] * diff[1] + pattField->trans[2][2] * diff[2];
         // print transformed vector to debug output
-//        qDebug() << Q_FUNC_INFO << vect[0] << " " << vect[1] << " " << vect[2];
+        //qDebug() << Q_FUNC_INFO << " z " << vect[1];
 
-        int column = (vect[0] + 120) / 35;
-        emit arHighlightColumn(column);
-        m_timeout.start(200);
-        if (vect[2] < 240 && column >= 0 && column <= 6)
+        if(vect[1]<100 && vect[1]>-60)
         {
-            if (!alreadyEmitted)
-                emit arChipDropped(column);
-            alreadyEmitted = true;
+            int column = (vect[0] + 120) / 35;
+            emit arHighlightColumn(column);
+            m_timeout.start(200);
+            if (vect[2] > 235 && vect[2] < 240 && column >= 0 && column <= 6)
+            {
+                if (!alreadyEmitted)
+                    emit arChipDropped(column);
+                alreadyEmitted = true;
+            }
+            else if (vect[2] >= 265)
+            {
+                alreadyEmitted = false;
+            }
         }
-        else if (vect[2] >= 260)
-        {
-            alreadyEmitted = false;
-        }
+    }
+    else
+    {
+        alreadyEmitted = false;
     }
 #endif
 }
