@@ -107,6 +107,7 @@ void GlField::draw()
     };
 
 
+
     polyList = glGenLists (1);
     glNewList(polyList, GL_COMPILE);
 
@@ -197,6 +198,7 @@ void GlField::draw()
 
 
     glEndList();
+
 
 
     glPushMatrix(); // Save world coordinate system.
