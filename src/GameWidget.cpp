@@ -50,14 +50,16 @@ void GameWidget::timerEvent(QTimerEvent* event)
         int column = (vect[0] + 120) / 35;
         emit arHighlightColumn(column);
         m_timeout.start(200);
-        if (vect[2] < 230 && column >= 0 && column <= 6)
+        if (vect[2] < 240 && column >= 0 && column <= 6)
         {
             if (!alreadyEmitted)
                 emit arChipDropped(column);
             alreadyEmitted = true;
         }
-        else
+        else if (vect[2] >= 260)
+        {
             alreadyEmitted = false;
+        }
     }
 #endif
 }
